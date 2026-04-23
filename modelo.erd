@@ -1,0 +1,102 @@
+[DEPARTAMENTO]
+*departamento_id
+nombre
+
+[PROVINCIA]
+*provincia_id
++departamento_id
+nombre
+
+[DISTRITO]
+*distrito_id
++provincia_id
+nombre
+
+[COLECCION]
+*coleccion_id
+nombre
+
+[ROL]
+*rol_id
+nombre
+
+[USUARIO]
+*usuario_id
++rol_id
+nombre
+apellido
+correo
+contrasena
+telefono
+foto_url
+fecha_registro
+
+[PROPIEDAD]
+*propiedad_id
++distrito_id
++usuario_id
+titulo
+descripcion
+precio
+direccion
+fecha_publicacion
+estado
+metros_cuadrados
+habitaciones
+banos
+url_vr
+
+[IMAGENES]
+*imagen_id
++propiedad_id
+url_imagen
+descripcion
+
+[FAVORITOS]
+*favorito_id
++usuario_id
++propiedad_id
++coleccion_id
+
+[RECOMENDACIONES]
+*recomendacion_id
++propiedad_id
++usuario_id
+
+[CONTACTO]
+*contacto_id
++propiedad_id
++usuario_id
+nombre
+correo
+telefono
+mensaje
+fecha
+
+[CALIFICACION]
+*calificacion_id
++propiedad_id
+puntuacion
+comentario
+fecha
+
+# Relaciones
+DEPARTAMENTO 1--* PROVINCIA
+PROVINCIA 1--* DISTRITO
+DISTRITO 1--* PROPIEDAD
+
+ROL 1--* USUARIO
+USUARIO 1--* PROPIEDAD
+PROPIEDAD 1--* IMAGENES
+
+USUARIO 1--* FAVORITOS
+PROPIEDAD 1--* FAVORITOS
+COLECCION 1--* FAVORITOS
+
+USUARIO 1--* RECOMENDACIONES
+PROPIEDAD 1--* RECOMENDACIONES
+
+USUARIO 1--* CONTACTO
+PROPIEDAD 1--* CONTACTO
+
+PROPIEDAD 1--* CALIFICACION
