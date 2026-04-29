@@ -9,6 +9,8 @@ public class ContactoDTO {
     private String telefono;
     private String mensaje;
     private LocalDate fecha;
+    private int propiedadId;
+    private int usuarioId;
 
     public int getContactoId() {
         return contactoId;
@@ -56,5 +58,21 @@ public class ContactoDTO {
 
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
+    }
+
+    public int getPropiedadId() {
+        return propiedadId;
+    }
+
+    public void setPropiedadId(int propiedadId) {
+        this.propiedadId = propiedadId;
+    }
+
+    public int getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
     }
 }
