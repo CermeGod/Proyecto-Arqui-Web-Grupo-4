@@ -33,4 +33,9 @@ public class IRolServiceImplement  implements IRolService {
     public Optional<Rol> listById(int id) {
         return rR.findById(id);
     }
+
+    @Override
+    public void update(Rol rol) {
+        rR.save(rol);
+    }
 }

@@ -10,4 +10,6 @@ public interface IRolService {
     public List<Rol> listar();
     public void eliminar(int id);
     public Optional<Rol> listById(int id);
+    public void update(Rol rol);
+
 }

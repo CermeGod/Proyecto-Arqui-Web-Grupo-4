@@ -5,11 +5,8 @@ import pe.edu.upc.inmovision.entities.Usuario;
 
 public class RecomendacionesDTO {
     private int recomendacionId;
-    private Propiedades propiedad;
-    private Usuario usuario;
-
-    public RecomendacionesDTO() {
-    }
+    private int propiedadId;
+    private int usuarioId;
 
     public int getRecomendacionId() {
         return recomendacionId;
@@ -19,19 +16,19 @@ public class RecomendacionesDTO {
         this.recomendacionId = recomendacionId;
     }
 
-    public Propiedades getPropiedad() {
-        return propiedad;
+    public int getPropiedadId() {
+        return propiedadId;
     }
 
-    public void setPropiedad(Propiedades propiedad) {
-        this.propiedad = propiedad;
+    public void setPropiedadId(int propiedadId) {
+        this.propiedadId = propiedadId;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public int getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
     }
 }
