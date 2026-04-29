@@ -10,4 +10,6 @@ public interface IUsuarioService {
     public List<Usuario> listar();
     public Optional<Usuario>listById(int id);
     public void delete(int id);
+    public List<Object[]> obtenerUsuariosConPropiedades();
+    public List<Object[]> contarUsuariosPorRol();
 }
