@@ -7,22 +7,22 @@ import jakarta.persistence.*;
 public class Departamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long departamentoId;
+    private int departamentoId;
     private String name;
 
     public Departamento() {
     }
 
-    public Departamento(Long departamentoId, String name) {
+    public Departamento(int departamentoId, String name) {
         this.departamentoId = departamentoId;
         this.name = name;
     }
 
-    public Long getDepartamentoId() {
+    public int getDepartamentoId() {
         return departamentoId;
     }
 
-    public void setDepartamentoId(Long departamentoId) {
+    public void setDepartamentoId(int departamentoId) {
         this.departamentoId = departamentoId;
     }
 
