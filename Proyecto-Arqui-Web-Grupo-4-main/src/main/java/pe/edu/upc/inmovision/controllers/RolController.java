@@ -10,7 +10,7 @@ import pe.edu.upc.inmovision.serviceimplements.IRolServiceImplement;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Inmovision")
+@RequestMapping("/Inmovision/rol")
 public class RolController {
     @Autowired
     private IRolServiceImplement rS;

@@ -10,4 +10,5 @@ public interface IPropiedadService {
     public List<Propiedades> listar();
     public Optional<Propiedades> listById(int id);
     public void delete(int id);
+    public void update(Propiedades propiedades);
 }

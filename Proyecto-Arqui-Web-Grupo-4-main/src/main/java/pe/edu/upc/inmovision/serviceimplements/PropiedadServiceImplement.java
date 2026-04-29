@@ -34,5 +34,10 @@ public class PropiedadServiceImplement implements IPropiedadService {
         pR.deleteById(id);
     }
 
+    @Override
+    public void update(Propiedades propiedades) {
+        pR.save(propiedades);
+    }
+
 
 }
