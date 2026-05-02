@@ -71,4 +71,16 @@ public class FavoritosController {
 
         return ResponseEntity.ok("Datos actualizados con éxito");
     }
+    @GetMapping("/cantidad-favoritos-por-usuario")
+    public ResponseEntity<?> cantidadFavoritosPorUsuario() {
+
+        List<Object[]> lista = fS.cantidadFavoritosPorUsuario();
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body("No hay datos");
+        }
+
+        return ResponseEntity.ok(lista);
+    }
 }

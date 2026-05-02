@@ -11,4 +11,5 @@ public interface IImagenesService {
     public Optional<Imagenes> buscarPorId(int id);
     public void delete(int id);
     public void update(Imagenes imagen);
+    public List<Object[]> cantidadImagenesPorPropiedad();
 }

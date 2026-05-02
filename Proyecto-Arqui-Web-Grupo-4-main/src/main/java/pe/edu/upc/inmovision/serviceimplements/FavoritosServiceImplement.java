@@ -39,4 +39,9 @@ public class FavoritosServiceImplement implements IFavoritosService {
     public void update(Favoritos favoritos) {
         fR.save(favoritos);
     }
+
+    @Override
+    public List<Object[]> cantidadFavoritosPorUsuario() {
+        return fR.cantidadFavoritosPorUsuario();
+    }
 }

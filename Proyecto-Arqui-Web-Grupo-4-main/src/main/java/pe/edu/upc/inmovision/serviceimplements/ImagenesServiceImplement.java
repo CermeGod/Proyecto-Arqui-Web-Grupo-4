@@ -39,4 +39,9 @@ public class ImagenesServiceImplement implements IImagenesService {
     public void update(Imagenes imagen) {
         iR.save(imagen);
     }
+
+    @Override
+    public List<Object[]> cantidadImagenesPorPropiedad() {
+        return iR.cantidadImagenesPorPropiedad();
+    }
 }

@@ -11,4 +11,5 @@ public interface IFavoritosService {
     public Optional<Favoritos> buscarPorId(int id);
     public void delete(int id);
     public void update(Favoritos favoritos);
+    public List<Object[]> cantidadFavoritosPorUsuario();
 }

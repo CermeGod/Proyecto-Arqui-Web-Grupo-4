@@ -69,4 +69,16 @@ public class ImagenesController {
 
         return ResponseEntity.ok("Datos actualizados con éxito");
     }
+    @GetMapping("/cantidad-imagenes-por-propiedad")
+    public ResponseEntity<?> cantidadImagenesPorPropiedad() {
+
+        List<Object[]> lista = iS.cantidadImagenesPorPropiedad();
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body("No hay datos");
+        }
+
+        return ResponseEntity.ok(lista);
+    }
 }
