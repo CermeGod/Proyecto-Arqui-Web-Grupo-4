@@ -1,4 +1,4 @@
-/*package pe.edu.upc.inmovision.securities;
+package pe.edu.upc.inmovision.securities;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -67,4 +67,4 @@ public class WebSecurityConfig {
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
-}*/
+}

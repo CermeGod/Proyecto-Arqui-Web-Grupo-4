@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.RecomendacionesDTO;
 import pe.edu.upc.inmovision.entities.Propiedades;
@@ -28,6 +29,7 @@ public class RecomendacionesController {
     private PropiedadServiceImplement pS;
 
     @PostMapping("/registrar-recomendacion")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<?> registrar(@RequestBody RecomendacionesDTO dto) {
         ModelMapper m = new ModelMapper();
         Optional<Usuario>listusuario=uS.listById(dto.getUsuarioId());
@@ -48,6 +50,7 @@ public class RecomendacionesController {
     }
 
     @GetMapping("/listar-recomendaciones")
+    @PreAuthorize("hasAuthority('Cliente')")
     public ResponseEntity<?> listar() {
         ModelMapper m = new ModelMapper();
         List<RecomendacionesDTO> lista = rS.listar().stream()
@@ -60,6 +63,7 @@ public class RecomendacionesController {
     }
 
     @DeleteMapping("/eliminar-recomendacion/{id}")
+    @PreAuthorize("hasAuthority('Cliente')")
     public ResponseEntity<String> eliminar(@PathVariable int id) {
         Optional<Recomendaciones> recomendacion = rS.listById(id);
         if (recomendacion.isPresent()) {

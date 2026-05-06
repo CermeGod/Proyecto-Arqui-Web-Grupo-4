@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.*;
 import pe.edu.upc.inmovision.entities.Departamento;
@@ -27,6 +28,7 @@ public class UsuarioController {
     private IRolService rS;
 
     @PostMapping("/registrar-usuario")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<?> insertar(@RequestBody UsuarioDTO dto)
     {
         ModelMapper m= new ModelMapper();
@@ -45,6 +47,7 @@ public class UsuarioController {
 
     }
     @GetMapping("/listar-usuario")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<?> listar()
     {
         ModelMapper m= new ModelMapper();
@@ -58,6 +61,7 @@ public class UsuarioController {
         return ResponseEntity.ok(listado);
     }
     @DeleteMapping("/eliminar-usuario/{id}")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Usuario> usuario=uS.listById(id);
@@ -73,6 +77,7 @@ public class UsuarioController {
         }
     }
     @PutMapping
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<String>actualizar(@RequestBody UsuarioDTO dto)
     {
         Optional<Usuario>existente=uS.listById(dto.getUsuarioId());
@@ -98,6 +103,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/con-propiedades")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<?> obtenerUsuariosConPropiedades() {
         List<Object[]>listarCantidad=uS.obtenerUsuariosConPropiedades();
         if(listarCantidad.isEmpty())
@@ -118,6 +124,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/listar-cantidad-usuarios-rol")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<?> obtenerUsuariosPorRol() {
         List<Object[]>listarCantUsuariosRol=uS.contarUsuariosPorRol();
         if(listarCantUsuariosRol.isEmpty())

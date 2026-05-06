@@ -39,7 +39,7 @@ public class Usuario implements Serializable {
 
     @Column(name = "fecha_registro", nullable = false)
     private LocalDate fechaRegistro;
-
+    @Column(name = "enabled", nullable = false)
     private Boolean enabled;
 
 

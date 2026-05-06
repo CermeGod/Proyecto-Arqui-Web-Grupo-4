@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.GeneralPropiedadDTO;
 import pe.edu.upc.inmovision.entities.Distrito;
@@ -31,7 +32,7 @@ public class PropiedadController {
     private IUsuarioServiceImplement uS;
 
     @PostMapping("/registrar")
-    //@PreAuthorize("hasAuthority('Propietario')")
+    @PreAuthorize("hasAuthority('Propietario')")
     public ResponseEntity<?> registrar(@RequestBody GeneralPropiedadDTO dto)
     {
         ModelMapper m = new ModelMapper();
@@ -50,7 +51,7 @@ public class PropiedadController {
     }
 
     @GetMapping("/listar-propiedades")
-    //@PreAuthorize("hasAuthority('Propietario')")
+    @PreAuthorize("hasAuthority('Propietario')")
     public ResponseEntity<?> listarPropiedades()
     {
         ModelMapper m = new ModelMapper();
@@ -65,6 +66,7 @@ public class PropiedadController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('Propietario')")
     public ResponseEntity<String>actualizar(@RequestBody GeneralPropiedadDTO dto) {
         Optional<Propiedades> existente = pS.listById(dto.getPropiedadId());
         if (existente.isEmpty()) {
@@ -97,6 +99,8 @@ public class PropiedadController {
 
     }
     @DeleteMapping("borrar-propiedad/{id}")
+    @PreAuthorize("hasAuthority('Propietario')")
+
     public ResponseEntity<String> borrarPropiedad(@PathVariable int id)
     {
         Optional<Propiedades> existe=pS.listById(id);

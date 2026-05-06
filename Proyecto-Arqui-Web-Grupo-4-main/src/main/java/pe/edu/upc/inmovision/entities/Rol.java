@@ -4,7 +4,7 @@ package pe.edu.upc.inmovision.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.List;
+
 
 @Entity
 @Table(name ="rol",uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "name"})})

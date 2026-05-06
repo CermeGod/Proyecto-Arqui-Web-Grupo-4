@@ -1,4 +1,4 @@
-/*package pe.edu.upc.inmovision.controllers;
+package pe.edu.upc.inmovision.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,15 +29,15 @@ public class JwtAuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponseDTO> login(@RequestBody JwtRequestDTO req) throws Exception {
-        authenticate(req.getUsername(), req.getPassword());
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getUsername());
+        authenticate(req.getCorreo(), req.getPassword());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getCorreo());
         final String token = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponseDTO(token));
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    private void authenticate(String correo, String password) throws Exception {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(correo, password));
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
@@ -46,4 +46,4 @@ public class JwtAuthenticationController {
 
 
     }
-}*/
+}

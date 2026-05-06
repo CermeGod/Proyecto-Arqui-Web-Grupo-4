@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.DistritoDTO;
 import pe.edu.upc.inmovision.entities.Distrito;
@@ -24,6 +25,7 @@ public class DistritoController {
     private ProvinciaServiceImplement pS;
 
     @PostMapping("/registrar-provincia")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<?> registrar(@RequestBody DistritoDTO dto)
     {
         ModelMapper m=new ModelMapper();
@@ -56,6 +58,7 @@ public class DistritoController {
     }
 
     @DeleteMapping("/eliminar-distrito/{id}")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Distrito> distrito=dS.listID(id);
@@ -71,6 +74,7 @@ public class DistritoController {
         }
     }
     @PutMapping
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<String>actualizar(@RequestBody DistritoDTO dto)
     {
         Optional<Distrito>existente=dS.listID(dto.getDistritoId());

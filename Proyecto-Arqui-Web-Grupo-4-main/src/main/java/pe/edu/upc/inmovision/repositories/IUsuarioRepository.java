@@ -9,7 +9,8 @@ import java.util.List;
 
 @Repository
 public interface IUsuarioRepository extends JpaRepository<Usuario,Integer> {
-    Usuario findOneByCorreo(String correo);
+    public Usuario findOneByCorreo(String correo);
+
     //QUERYS NATIVE STEPHANO
     @Query(value = "SELECT \n" +
             "        u.usuario_id,\n" +

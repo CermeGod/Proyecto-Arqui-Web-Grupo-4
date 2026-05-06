@@ -1,4 +1,4 @@
-/*package pe.edu.upc.inmovision.serviceimplements;
+package pe.edu.upc.inmovision.serviceimplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,11 +20,11 @@ public class JwtUserDetailsService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = repo.findOneByCorreo(username);
+    public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
+        Usuario usuario = repo.findOneByCorreo(correo);
 
         if (usuario == null) {
-            throw new UsernameNotFoundException(String.format("User not exists", username));
+            throw new UsernameNotFoundException(String.format("User not exists", correo));
         }
 
         List<GrantedAuthority> roles = new ArrayList<>();
@@ -37,4 +37,4 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         return ud;
     }
-}*/
+}

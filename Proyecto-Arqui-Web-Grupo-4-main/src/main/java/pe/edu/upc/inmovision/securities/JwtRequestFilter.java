@@ -1,4 +1,4 @@
-/*package pe.edu.upc.inmovision.securities;
+package pe.edu.upc.inmovision.securities;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -67,4 +67,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
         chain.doFilter(request, response);
     }
-}*/
+}

@@ -1,26 +1,26 @@
 package pe.edu.upc.inmovision.dtos;
 
 public class JwtRequestDTO {
-    private String username;
+    private String correo;
     private String password;
     public JwtRequestDTO() {
         super();
         // TODO Auto-generated constructor stub
     }
-    public JwtRequestDTO(String username, String password) {
+    public JwtRequestDTO(String correo, String password) {
         super();
-        this.username = username;
+        this.correo = correo;
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    public String getCorreo() {
+        return correo;
     }
     public String getPassword() {
         return password;
     }
-    public void setUsername(String username) {
-        this.username = username;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
     public void setPassword(String password) {
         this.password = password;
