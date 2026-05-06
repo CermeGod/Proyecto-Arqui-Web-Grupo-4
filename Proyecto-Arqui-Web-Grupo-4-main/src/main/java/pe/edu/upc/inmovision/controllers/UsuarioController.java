@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pe.edu.upc.inmovision.dtos.ProvinciaDTO;
-import pe.edu.upc.inmovision.dtos.UsuarioDTO;
-import pe.edu.upc.inmovision.dtos.UsuarioResponseDTO;
+import pe.edu.upc.inmovision.dtos.*;
 import pe.edu.upc.inmovision.entities.Departamento;
 import pe.edu.upc.inmovision.entities.Provincia;
 import pe.edu.upc.inmovision.entities.Rol;
@@ -15,6 +13,7 @@ import pe.edu.upc.inmovision.entities.Usuario;
 import pe.edu.upc.inmovision.serviceinterfaces.IRolService;
 import pe.edu.upc.inmovision.serviceinterfaces.IUsuarioService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -97,4 +96,46 @@ public class UsuarioController {
         uS.insertar(u);
         return ResponseEntity.ok("Datos actualizados con éxito");
     }
+
+    @GetMapping("/con-propiedades")
+    public ResponseEntity<?> obtenerUsuariosConPropiedades() {
+        List<Object[]>listarCantidad=uS.obtenerUsuariosConPropiedades();
+        if(listarCantidad.isEmpty())
+        {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No hay propiedades registradas");
+        }
+        List<UsuarioPropiedadDTO> respuesta=new ArrayList<>();
+        for(Object[] fila:listarCantidad)
+        {
+            UsuarioPropiedadDTO dto=new UsuarioPropiedadDTO();
+            dto.setUsuarioId(((Number)fila[0]).intValue());
+            dto.setNombre(((String)fila[1]));
+            dto.setApellido(((String)fila[2]));
+            dto.setTotalPropiedades(((Number)fila[3]).intValue());
+            respuesta.add(dto);
+        }
+        return ResponseEntity.ok(respuesta);
+    }
+
+    @GetMapping("/listar-cantidad-usuarios-rol")
+    public ResponseEntity<?> obtenerUsuariosPorRol() {
+        List<Object[]>listarCantUsuariosRol=uS.contarUsuariosPorRol();
+        if(listarCantUsuariosRol.isEmpty())
+        {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No hay usuarios registrados");
+        }
+        List<RolCountDTO>respuesta=new ArrayList<>();
+        for(Object[] fila:listarCantUsuariosRol)
+        {
+            RolCountDTO dto=new RolCountDTO();
+            dto.setNombre(((String)fila[0]));
+            dto.setTotalUsuarios(((Number)fila[1]).intValue());
+            respuesta.add(dto);
+        }
+        return ResponseEntity.ok(respuesta);
+    }
+
+
+
+
 }

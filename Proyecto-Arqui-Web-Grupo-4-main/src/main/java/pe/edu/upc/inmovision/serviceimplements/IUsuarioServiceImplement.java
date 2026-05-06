@@ -32,4 +32,14 @@ public class IUsuarioServiceImplement implements IUsuarioService {
     public void delete(int id) {
         uR.deleteById(id);
     }
+
+    @Override
+    public List<Object[]> obtenerUsuariosConPropiedades() {
+        return uR.obtenerUsuariosConPropiedades();
+    }
+
+    @Override
+    public List<Object[]> contarUsuariosPorRol() {
+        return uR.contarUsuariosPorRol();
+    }
 }

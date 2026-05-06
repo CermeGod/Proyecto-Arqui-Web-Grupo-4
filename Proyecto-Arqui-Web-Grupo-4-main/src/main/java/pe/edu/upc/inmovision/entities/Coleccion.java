@@ -7,22 +7,22 @@ import jakarta.persistence.*;
 public class Coleccion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long coleccionId;
+    private int coleccionId;
     private String name;
 
     public Coleccion() {
     }
 
-    public Coleccion(Long coleccionId, String name) {
+    public Coleccion(int coleccionId, String name) {
         this.coleccionId = coleccionId;
         this.name = name;
     }
 
-    public Long getColeccionId() {
+    public int getColeccionId() {
         return coleccionId;
     }
 
-    public void setColeccionId(Long coleccionId) {
+    public void setColeccionId(int coleccionId) {
         this.coleccionId = coleccionId;
     }
 
