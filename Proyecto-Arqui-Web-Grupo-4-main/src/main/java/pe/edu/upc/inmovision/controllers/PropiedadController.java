@@ -6,15 +6,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.GeneralPropiedadDTO;
+import pe.edu.upc.inmovision.dtos.QuantityPropiedadxContactoDTO;
+import pe.edu.upc.inmovision.dtos.QuantityPropiedadxDistritoDTO;
 import pe.edu.upc.inmovision.entities.Distrito;
 import pe.edu.upc.inmovision.entities.Propiedades;
 import pe.edu.upc.inmovision.entities.Usuario;
 import pe.edu.upc.inmovision.serviceimplements.DistritoServiceImplement;
 import pe.edu.upc.inmovision.serviceimplements.IUsuarioServiceImplement;
 import pe.edu.upc.inmovision.serviceimplements.PropiedadServiceImplement;
-import pe.edu.upc.inmovision.serviceimplements.ProvinciaServiceImplement;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -106,5 +108,45 @@ public class PropiedadController {
         else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Propiedad no encontrada");
         }
+    }
+
+    @GetMapping("/propiedadesXdistrito")
+    public ResponseEntity<?> propiedadesPorDistrito() {
+        List<Object[]> lista = pS.propiedadesPorDistrito();
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay registros");
+        }
+
+        List<QuantityPropiedadxDistritoDTO> respuesta = new ArrayList<>();
+
+        for (Object[] fila : lista) {
+            QuantityPropiedadxDistritoDTO dto = new QuantityPropiedadxDistritoDTO();
+            dto.setNombre((String) fila[0]);
+            dto.setCantidad(((Number) fila[1]).intValue());
+            respuesta.add(dto);
+        }
+
+        return ResponseEntity.ok(respuesta);
+    }
+
+    @GetMapping("/propiedadesXcontacto")
+    public ResponseEntity<?> propiedadesPorContacto() {
+        List<Object[]> lista = pS.propiedadesPorContacto();
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay registros");
+        }
+
+        List<QuantityPropiedadxContactoDTO> respuesta = new ArrayList<>();
+
+        for (Object[] fila : lista) {
+            QuantityPropiedadxContactoDTO dto = new QuantityPropiedadxContactoDTO();
+            dto.setTitulo((String) fila[0]);
+            dto.setCantidadXcontactos(((Number) fila[1]).intValue());
+            respuesta.add(dto);
+        }
+
+        return ResponseEntity.ok(respuesta);
     }
 }
