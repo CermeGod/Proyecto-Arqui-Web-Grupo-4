@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/Inmovision/recomendaciones")
 public class RecomendacionesController {
+
     @Autowired
     private IRecomendacionesService rS;
 
@@ -57,13 +58,27 @@ public class RecomendacionesController {
         if (existente.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Recomendacion no encontrada");
         }
-        if (dto.getPropiedad() == null || dto.getUsuario() == null) {
-            return ResponseEntity.badRequest().body("Por favor completar los campos");
-        }
-        Recomendaciones r = existente.get();
-        r.setPropiedad(dto.getPropiedad());
-        r.setUsuario(dto.getUsuario());
+        ModelMapper m = new ModelMapper();
+        Recomendaciones r = m.map(dto, Recomendaciones.class);
         rS.insertar(r);
         return ResponseEntity.ok("Datos actualizados con exito");
+    }
+
+    @GetMapping("/cantidad-compartidos/{idPropiedad}")
+    public ResponseEntity<Integer> contarCompartidos(@PathVariable int idPropiedad){
+        Integer cantidad = rS.contarPorPropiedad(idPropiedad);
+        return ResponseEntity.ok(cantidad);
+    }
+
+    @GetMapping("/compartidos-por-usuario/{idUsuario}")
+    public ResponseEntity<?> compartidosPorUsuario(@PathVariable int idUsuario){
+        ModelMapper m = new ModelMapper();
+        List<RecomendacionesDTO> lista = rS.buscarPorUsuario(idUsuario).stream()
+                .map(y -> m.map(y, RecomendacionesDTO.class))
+                .collect(Collectors.toList());
+        if(lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("El usuario no ha compartido nada todavia");
+        }
+        return ResponseEntity.ok(lista);
     }
 }
