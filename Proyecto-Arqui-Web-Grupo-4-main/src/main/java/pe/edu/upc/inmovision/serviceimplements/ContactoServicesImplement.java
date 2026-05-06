@@ -1,13 +1,13 @@
 package pe.edu.upc.inmovision.serviceimplements;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pe.edu.upc.inmovision.entities.Contacto;
 import pe.edu.upc.inmovision.repositories.IContactoRepository;
 import pe.edu.upc.inmovision.serviceinterfaces.IContactoService;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class ContactoServicesImplement implements IContactoService {
     @Autowired
     private IContactoRepository cR;
@@ -37,5 +37,15 @@ public class ContactoServicesImplement implements IContactoService {
     public void update(Contacto contacto) {
         cR.save(contacto);
 
+    }
+
+    @Override
+    public List<Object[]> cantidadContactoPorUsuario() {
+        return cR.cantidadContactoPorUsuario();
+    }
+
+    @Override
+    public List<Object[]> cantidadContactoPorPropiedad() {
+        return cR.cantidadContactoPorPropiedad();
     }
 }

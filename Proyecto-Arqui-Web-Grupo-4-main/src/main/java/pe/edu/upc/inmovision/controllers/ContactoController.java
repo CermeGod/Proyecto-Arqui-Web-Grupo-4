@@ -16,6 +16,7 @@ import pe.edu.upc.inmovision.entities.Provincia;
 import pe.edu.upc.inmovision.entities.Usuario;
 import pe.edu.upc.inmovision.serviceimplements.ContactoServicesImplement;
 import pe.edu.upc.inmovision.serviceimplements.DepartamentoServiceImplement;
+import pe.edu.upc.inmovision.serviceimplements.IUsuarioServiceImplement;
 import pe.edu.upc.inmovision.serviceimplements.PropiedadServiceImplement;
 
 import java.util.List;
@@ -29,21 +30,24 @@ public class ContactoController {
     private ContactoServicesImplement cS;
     @Autowired
     private PropiedadServiceImplement pS;
+    @Autowired
+    private IUsuarioServiceImplement uS;
 
     @PostMapping("/registrar-contacto")
     public ResponseEntity<?> registrar(@RequestBody ContactoDTO dto)
     {
         ModelMapper m = new ModelMapper();
-        Optional<Contacto> listado=cS.buscarPorId(dto.getContactoId());
-        if(listado.isPresent())
+        Optional<Propiedades> listpropiedad=pS.listById(dto.getPropiedadId());
+        Optional<Usuario>listusuario=uS.listById(dto.getUsuarioId());
+        if(listpropiedad.isPresent() && listusuario.isPresent())
         {
-            Propiedades p=m.map(dto,Propiedades.class);
-            Propiedades pr=pS.insertar(p);
-            GeneralPropiedadDTO responseDTO=m.map(pr,GeneralPropiedadDTO.class);
+            Contacto c=m.map(dto,Contacto.class);
+            Contacto co=cS.insertar(c);
+            ContactoDTO responseDTO=m.map(co,ContactoDTO.class);
             return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
         }
         else {
-            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el Contacto");
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el usuario o propiedad");
         }
 
     }
@@ -60,7 +64,7 @@ public class ContactoController {
         return ResponseEntity.ok(lista);
     }
 
-    @DeleteMapping("/eliminar-provincia/{id}")
+    @DeleteMapping("/eliminar-contacto/{id}")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Contacto> contacto=cS.buscarPorId(id);
@@ -68,36 +72,41 @@ public class ContactoController {
         if(contacto.isPresent())
         {
             cS.delete(id);
-            return ResponseEntity.ok("Contacto eliminada con éxito");
+            return ResponseEntity.ok("Contacto eliminado con éxito");
         }
         else
         {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contacto no encontrada");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contacto no encontrad0");
         }
     }
 
-    @PutMapping
-    public ResponseEntity<String>actualizar(@RequestBody ContactoDTO dto)
-    {
-        Optional<Contacto>existente=cS.buscarPorId(dto.getContactoId());
-        if(existente.isEmpty())
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contacto no encontrado");
-        }
-        if(dto.getNombre()==null || dto.getMensaje()==null || dto.getCorreo()==null
-                || dto.getTelefono()==null || dto.getFecha()==null)
-        {
-            return ResponseEntity.badRequest().body("Por favor completar los campos");
-        }
-        Contacto c= existente.get();
-        c.setNombre(dto.getNombre());
-        c.setMensaje(dto.getMensaje());
-        c.setCorreo(dto.getCorreo());
-        c.setTelefono(dto.getTelefono());
-        c.setFecha(dto.getFecha());
 
-        cS.insertar(c);
-        return ResponseEntity.ok("Datos actualizados con éxito");
+    @GetMapping("/cantidad-contacto-por-usuario")
+    public ResponseEntity<?> cantidadContactoPorUsuario() {
+
+        List<Object[]> lista = cS.cantidadContactoPorUsuario();
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body("No hay datos");
+        }
+
+        return ResponseEntity.ok(lista);
     }
+
+    @GetMapping("/cantidad-contacto-por-propiedad")
+    public ResponseEntity<?> cantidadContactoPorPropiedad() {
+
+        List<Object[]> lista = cS.cantidadContactoPorPropiedad();
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body("No hay datos");
+        }
+
+        return ResponseEntity.ok(lista);
+    }
+
+
 
 }

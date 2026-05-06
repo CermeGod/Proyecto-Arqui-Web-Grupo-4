@@ -12,5 +12,7 @@ public interface IContactoService {
     public Optional<Contacto> buscarPorId(int id);
     public void delete(int id);
     public void update(Contacto contacto);
+    public List<Object[]> cantidadContactoPorUsuario();
+    public List<Object[]> cantidadContactoPorPropiedad();
 
 }
