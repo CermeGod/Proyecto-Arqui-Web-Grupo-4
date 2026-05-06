@@ -94,7 +94,7 @@ public class PropiedadController {
         return ResponseEntity.ok("Propiedad actualizada");
 
     }
-    @DeleteMapping("borrar-propiedad/{id}")
+    @DeleteMapping("borrarXpropiedad/{id}")
     public ResponseEntity<String> borrarPropiedad(@PathVariable int id)
     {
         Optional<Propiedades> existe=pS.listById(id);
