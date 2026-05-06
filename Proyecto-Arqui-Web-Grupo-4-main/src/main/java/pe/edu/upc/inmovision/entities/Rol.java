@@ -1,22 +1,23 @@
 package pe.edu.upc.inmovision.entities;
 
+
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+import java.util.List;
+
 @Entity
-@Table(name ="rol")
-public class Rol {
+@Table(name ="rol",uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "name"})})
+    public class Rol implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rolId;
     private String name;
 
-    public Rol() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private Usuario usuario;
 
-    public Rol(Long rolId, String name) {
-        this.rolId = rolId;
-        this.name = name;
-    }
 
     public Long getRolId() {
         return rolId;
@@ -32,5 +33,13 @@ public class Rol {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

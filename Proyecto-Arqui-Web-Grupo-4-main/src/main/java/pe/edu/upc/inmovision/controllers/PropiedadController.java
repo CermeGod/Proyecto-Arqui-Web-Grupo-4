@@ -12,7 +12,7 @@ import pe.edu.upc.inmovision.entities.Usuario;
 import pe.edu.upc.inmovision.serviceimplements.DistritoServiceImplement;
 import pe.edu.upc.inmovision.serviceimplements.IUsuarioServiceImplement;
 import pe.edu.upc.inmovision.serviceimplements.PropiedadServiceImplement;
-import pe.edu.upc.inmovision.serviceimplements.ProvinciaServiceImplement;
+
 
 
 import java.util.List;
@@ -31,6 +31,7 @@ public class PropiedadController {
     private IUsuarioServiceImplement uS;
 
     @PostMapping("/registrar")
+    //@PreAuthorize("hasAuthority('Propietario')")
     public ResponseEntity<?> registrar(@RequestBody GeneralPropiedadDTO dto)
     {
         ModelMapper m = new ModelMapper();
@@ -49,6 +50,7 @@ public class PropiedadController {
     }
 
     @GetMapping("/listar-propiedades")
+    //@PreAuthorize("hasAuthority('Propietario')")
     public ResponseEntity<?> listarPropiedades()
     {
         ModelMapper m = new ModelMapper();

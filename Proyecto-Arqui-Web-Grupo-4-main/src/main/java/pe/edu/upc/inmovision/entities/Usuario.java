@@ -2,20 +2,22 @@ package pe.edu.upc.inmovision.entities;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Entity
 @Table(name = "usuario")
-public class Usuario {
+public class Usuario implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int usuarioId;
 
-    @ManyToOne
-    @JoinColumn(name = "rolId", nullable = false)
-    private Rol rol;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Rol> rols;
 
     @Column(name = "nombre", nullable = false, length = 50)
     private String nombre;
@@ -38,20 +40,9 @@ public class Usuario {
     @Column(name = "fecha_registro", nullable = false)
     private LocalDate fechaRegistro;
 
-    public Usuario() {
-    }
+    private Boolean enabled;
 
-    public Usuario(int usuarioId, Rol rol, String nombre, String apellido, String correo, String contrasena, String telefono, String fotoUrl, LocalDate fechaRegistro) {
-        this.usuarioId = usuarioId;
-        this.rol = rol;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.correo = correo;
-        this.contrasena = contrasena;
-        this.telefono = telefono;
-        this.fotoUrl = fotoUrl;
-        this.fechaRegistro = fechaRegistro;
-    }
+
 
     public int getUsuarioId() {
         return usuarioId;
@@ -61,12 +52,12 @@ public class Usuario {
         this.usuarioId = usuarioId;
     }
 
-    public Rol getRol() {
-        return rol;
+    public List<Rol> getRols() {
+        return rols;
     }
 
-    public void setRol(Rol rol) {
-        this.rol = rol;
+    public void setRols(List<Rol> rols) {
+        this.rols = rols;
     }
 
     public String getNombre() {
@@ -123,5 +114,13 @@ public class Usuario {
 
     public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }
