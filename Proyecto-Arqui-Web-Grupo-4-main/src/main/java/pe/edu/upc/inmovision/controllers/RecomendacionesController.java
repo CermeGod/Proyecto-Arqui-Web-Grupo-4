@@ -6,11 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.RecomendacionesDTO;
-import pe.edu.upc.inmovision.entities.Propiedades;
 import pe.edu.upc.inmovision.entities.Recomendaciones;
-import pe.edu.upc.inmovision.entities.Usuario;
-import pe.edu.upc.inmovision.serviceimplements.IUsuarioServiceImplement;
-import pe.edu.upc.inmovision.serviceimplements.PropiedadServiceImplement;
 import pe.edu.upc.inmovision.serviceinterfaces.IRecomendacionesService;
 
 import java.util.List;
@@ -20,31 +16,17 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/Inmovision/recomendaciones")
 public class RecomendacionesController {
+
     @Autowired
     private IRecomendacionesService rS;
-    @Autowired
-    private IUsuarioServiceImplement uS;
-    @Autowired
-    private PropiedadServiceImplement pS;
 
     @PostMapping("/registrar-recomendacion")
-    public ResponseEntity<?> registrar(@RequestBody RecomendacionesDTO dto) {
+    public ResponseEntity<RecomendacionesDTO> registrar(@RequestBody RecomendacionesDTO dto) {
         ModelMapper m = new ModelMapper();
-        Optional<Usuario>listusuario=uS.listById(dto.getUsuarioId());
-        Optional<Propiedades>listpropiedades=pS.listById(dto.getPropiedadId());
-        if(listusuario.isPresent()&&listpropiedades.isPresent())
-        {
-            Recomendaciones r = m.map(dto, Recomendaciones.class);
-            Recomendaciones rec = rS.insertar(r);
-            RecomendacionesDTO responseDTO = m.map(rec, RecomendacionesDTO.class);
-            return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Usuario o propiedad no encontrada");
-        }
-
-
+        Recomendaciones r = m.map(dto, Recomendaciones.class);
+        Recomendaciones rec = rS.insertar(r);
+        RecomendacionesDTO responseDTO = m.map(rec, RecomendacionesDTO.class);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
     @GetMapping("/listar-recomendaciones")
@@ -70,5 +52,33 @@ public class RecomendacionesController {
         }
     }
 
-    
+    @PutMapping
+    public ResponseEntity<String> actualizar(@RequestBody RecomendacionesDTO dto) {
+        Optional<Recomendaciones> existente = rS.listById(dto.getRecomendacionId());
+        if (existente.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Recomendacion no encontrada");
+        }
+        ModelMapper m = new ModelMapper();
+        Recomendaciones r = m.map(dto, Recomendaciones.class);
+        rS.insertar(r);
+        return ResponseEntity.ok("Datos actualizados con exito");
+    }
+
+    @GetMapping("/cantidad-compartidos/{idPropiedad}")
+    public ResponseEntity<Integer> contarCompartidos(@PathVariable int idPropiedad){
+        Integer cantidad = rS.contarPorPropiedad(idPropiedad);
+        return ResponseEntity.ok(cantidad);
+    }
+
+    @GetMapping("/compartidos-por-usuario/{idUsuario}")
+    public ResponseEntity<?> compartidosPorUsuario(@PathVariable int idUsuario){
+        ModelMapper m = new ModelMapper();
+        List<RecomendacionesDTO> lista = rS.buscarPorUsuario(idUsuario).stream()
+                .map(y -> m.map(y, RecomendacionesDTO.class))
+                .collect(Collectors.toList());
+        if(lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("El usuario no ha compartido nada todavia");
+        }
+        return ResponseEntity.ok(lista);
+    }
 }
