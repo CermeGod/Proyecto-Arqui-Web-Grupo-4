@@ -18,6 +18,7 @@ public class DepartamentoController {
     private DepartamentoServiceImplement dS;
 
     @PostMapping("/registrar-departamento")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<Departamento> registrar(@RequestBody Departamento departamento)
     {
         Departamento d=dS.insertar(departamento);

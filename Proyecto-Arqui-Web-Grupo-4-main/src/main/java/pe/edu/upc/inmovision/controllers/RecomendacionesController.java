@@ -50,7 +50,7 @@ public class RecomendacionesController {
     }
 
     @GetMapping("/listar-recomendaciones")
-    @PreAuthorize("hasAuthority('Cliente')")
+    @PreAuthorize("hasAnyAuthority('Cliente','Administrador')")
     public ResponseEntity<?> listar() {
         ModelMapper m = new ModelMapper();
         List<RecomendacionesDTO> lista = rS.listar().stream()
@@ -63,7 +63,7 @@ public class RecomendacionesController {
     }
 
     @DeleteMapping("/eliminar-recomendacion/{id}")
-    @PreAuthorize("hasAuthority('Cliente')")
+    @PreAuthorize("hasAnyAuthority('Cliente','Administrador')")
     public ResponseEntity<String> eliminar(@PathVariable int id) {
         Optional<Recomendaciones> recomendacion = rS.listById(id);
         if (recomendacion.isPresent()) {

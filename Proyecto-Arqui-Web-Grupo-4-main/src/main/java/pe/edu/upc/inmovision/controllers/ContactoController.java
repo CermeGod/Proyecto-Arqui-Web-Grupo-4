@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.ContactoDTO;
 import pe.edu.upc.inmovision.dtos.GeneralPropiedadDTO;
@@ -34,6 +35,7 @@ public class ContactoController {
     private IUsuarioServiceImplement uS;
 
     @PostMapping("/registrar-contacto")
+    @PreAuthorize("hasAuthority('Cliente')")
     public ResponseEntity<?> registrar(@RequestBody ContactoDTO dto)
     {
         ModelMapper m = new ModelMapper();
@@ -53,6 +55,7 @@ public class ContactoController {
     }
 
     @GetMapping("/listar-contacto")
+    @PreAuthorize("hasAuthority('Propietario')")
     public ResponseEntity<?> listarcontacto() {
         ModelMapper m = new ModelMapper();
         List<ContactoDTO> lista = cS.listar().stream()
@@ -65,6 +68,7 @@ public class ContactoController {
     }
 
     @DeleteMapping("/eliminar-contacto/{id}")
+    @PreAuthorize("hasAuthority('Propietario')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Contacto> contacto=cS.buscarPorId(id);
