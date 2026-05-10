@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+.idea/
+target/
+*.iml
+*.temp
+.DS_Store
+Thumbs.db
+
+
+*.log
+=======
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -9,3 +20,4 @@ target/
 *.iws
 *.iml
 *.ipr
+>>>>>>> origin/main
