@@ -1,5 +1,6 @@
 package pe.edu.upc.inmovision.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/Inmovision/rol")
+@SecurityRequirement(name = "bearerAuth")
 public class RolController {
     @Autowired
     private IRolServiceImplement rS;
 
     @PostMapping("/registrar-roles")
-    @PreAuthorize("hasAuthority('Administrador')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Rol>registrar(@RequestBody Rol rol)
     {
         Rol r=rS.insertar(rol);
@@ -34,7 +36,7 @@ public class RolController {
     }
 
     @PutMapping("/modificar-rol")
-    @PreAuthorize("hasAuthority('Administrador')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> actualizar(@RequestBody RolDTO dto)
     {
         Optional<Rol> existente=rS.listById(dto.getRolId());
@@ -42,18 +44,18 @@ public class RolController {
         {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rol no encontrado");
         }
-        if(dto.getNombre()==null)
+        if(dto.getName()==null)
         {
             return ResponseEntity.badRequest().body("El nombre no puede estar vacio");
         }
         Rol r=existente.get();
-        r.setName(dto.getNombre());
+        r.setName(dto.getName());
         rS.update(r);
         return ResponseEntity.ok("Rol actualizado");
     }
 
     @DeleteMapping("/eliminar-rol/{id}")
-    @PreAuthorize("hasAuthority('Administrador')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> delete(@PathVariable int id)
     {
         Optional<Rol> existente=rS.listById(id);

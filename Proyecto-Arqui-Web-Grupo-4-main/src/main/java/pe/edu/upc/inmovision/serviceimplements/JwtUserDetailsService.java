@@ -29,7 +29,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         List<GrantedAuthority> roles = new ArrayList<>();
 
-        usuario.getRols().forEach(rol -> {
+        usuario.getRoles().forEach(rol -> {
             roles.add(new SimpleGrantedAuthority(rol.getName()));
         });
 

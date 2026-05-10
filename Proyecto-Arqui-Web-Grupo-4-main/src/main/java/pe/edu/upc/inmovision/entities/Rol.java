@@ -1,29 +1,31 @@
 package pe.edu.upc.inmovision.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
-@Table(name ="rol",uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "name"})})
+@Table(name ="rol",uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
     public class Rol implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rolId;
+    private int rolId;
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private Usuario usuario;
+    @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
+    private List<Usuario> usuarios;
 
-
-    public Long getRolId() {
+    public int getRolId() {
         return rolId;
     }
 
-    public void setRolId(Long rolId) {
+    public void setRolId(int rolId) {
         this.rolId = rolId;
     }
 
@@ -35,11 +37,11 @@ import java.io.Serializable;
         this.name = name;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public List<Usuario> getUsuarios() {
+        return usuarios;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
 }

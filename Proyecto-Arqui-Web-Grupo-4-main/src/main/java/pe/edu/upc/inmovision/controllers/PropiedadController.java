@@ -33,8 +33,8 @@ public class PropiedadController {
     @Autowired
     private IUsuarioServiceImplement uS;
 
-    @PostMapping("/registrar")
-    @PreAuthorize("hasAuthority('Propietario')")
+    @PostMapping("/registrar-propiedad")
+    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
     public ResponseEntity<?> registrar(@RequestBody GeneralPropiedadDTO dto)
     {
         ModelMapper m = new ModelMapper();
@@ -53,7 +53,6 @@ public class PropiedadController {
     }
 
     @GetMapping("/listar-propiedades")
-    @PreAuthorize("hasAuthority('Propietario')")
     public ResponseEntity<?> listarPropiedades()
     {
         ModelMapper m = new ModelMapper();
@@ -67,8 +66,8 @@ public class PropiedadController {
         return ResponseEntity.ok(lista);
     }
 
-    @PutMapping
-    @PreAuthorize("hasAuthority('Propietario')")
+    @PutMapping("/modificar-propiedad")
+    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
     public ResponseEntity<String>actualizar(@RequestBody GeneralPropiedadDTO dto) {
         Optional<Propiedades> existente = pS.listById(dto.getPropiedadId());
         if (existente.isEmpty()) {
@@ -100,8 +99,9 @@ public class PropiedadController {
         return ResponseEntity.ok("Propiedad actualizada");
 
     }
-    @DeleteMapping("borrar-propiedad/{id}")
-    @PreAuthorize("hasAuthority('Propietario')")
+
+    @DeleteMapping("/eliminar-propiedad/{id}")
+    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
 
     public ResponseEntity<String> borrarPropiedad(@PathVariable int id)
     {

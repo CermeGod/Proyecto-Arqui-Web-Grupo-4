@@ -1,5 +1,6 @@
 package pe.edu.upc.inmovision.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,14 +19,15 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/Inmovision/distrito")
+@SecurityRequirement(name = "bearerAuth")
 public class DistritoController {
     @Autowired
     private DistritoServiceImplement dS;
     @Autowired
     private ProvinciaServiceImplement pS;
 
-    @PostMapping("/registrar-provincia")
-    @PreAuthorize("hasAuthority('Administrador')")
+    @PostMapping("/registrar-distrito")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> registrar(@RequestBody DistritoDTO dto)
     {
         ModelMapper m=new ModelMapper();
@@ -58,7 +60,7 @@ public class DistritoController {
     }
 
     @DeleteMapping("/eliminar-distrito/{id}")
-    @PreAuthorize("hasAuthority('Administrador')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Distrito> distrito=dS.listID(id);
@@ -73,8 +75,9 @@ public class DistritoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Distrito no encontrado");
         }
     }
-    @PutMapping
-    @PreAuthorize("hasAuthority('Administrador')")
+   
+    @PutMapping("/modificar-distrito")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String>actualizar(@RequestBody DistritoDTO dto)
     {
         Optional<Distrito>existente=dS.listID(dto.getDistritoId());

@@ -15,10 +15,13 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int usuarioId;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private List<Rol> rols;
-
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "usuario_rol",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "rol_id")
+    )
+    private List<Rol> roles;
     @Column(name = "nombre", nullable = false, length = 50)
     private String nombre;
 
@@ -42,8 +45,6 @@ public class Usuario implements Serializable {
     @Column(name = "enabled", nullable = false)
     private Boolean enabled;
 
-
-
     public int getUsuarioId() {
         return usuarioId;
     }
@@ -52,12 +53,12 @@ public class Usuario implements Serializable {
         this.usuarioId = usuarioId;
     }
 
-    public List<Rol> getRols() {
-        return rols;
+    public List<Rol> getRoles() {
+        return roles;
     }
 
-    public void setRols(List<Rol> rols) {
-        this.rols = rols;
+    public void setRoles(List<Rol> roles) {
+        this.roles = roles;
     }
 
     public String getNombre() {
