@@ -19,6 +19,7 @@ import pe.edu.upc.inmovision.serviceimplements.DepartamentoServiceImplement;
 import pe.edu.upc.inmovision.serviceimplements.IUsuarioServiceImplement;
 import pe.edu.upc.inmovision.serviceimplements.PropiedadServiceImplement;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -80,32 +81,43 @@ public class ContactoController {
         }
     }
 
+    @GetMapping("/buscar-por-nombre/{nombre}")
+    public ResponseEntity<?> buscarPorNombre(@PathVariable String nombre) {
 
-    @GetMapping("/cantidad-contacto-por-usuario")
-    public ResponseEntity<?> cantidadContactoPorUsuario() {
+        ModelMapper m = new ModelMapper();
 
-        List<Object[]> lista = cS.cantidadContactoPorUsuario();
+        List<ContactoDTO> lista = cS.buscarPorNombre(nombre)
+                .stream()
+                .map(x -> m.map(x, ContactoDTO.class))
+                .collect(Collectors.toList());
 
-        if (lista.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body("No hay datos");
+        if(lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron contactos");
         }
 
         return ResponseEntity.ok(lista);
     }
 
-    @GetMapping("/cantidad-contacto-por-propiedad")
-    public ResponseEntity<?> cantidadContactoPorPropiedad() {
+    @GetMapping("/buscar-por-fecha/{fecha}")
+    public ResponseEntity<?> buscarPorFecha(@PathVariable LocalDate fecha) {
 
-        List<Object[]> lista = cS.cantidadContactoPorPropiedad();
+        ModelMapper m = new ModelMapper();
 
-        if (lista.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body("No hay datos");
+        List<ContactoDTO> lista = cS.buscarPorFecha(fecha)
+                .stream()
+                .map(x -> m.map(x, ContactoDTO.class))
+                .collect(Collectors.toList());
+
+        if(lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron contactos en esa fecha");
         }
 
         return ResponseEntity.ok(lista);
     }
+
+
 
 
 

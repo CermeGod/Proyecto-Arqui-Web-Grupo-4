@@ -3,6 +3,7 @@ package pe.edu.upc.inmovision.serviceinterfaces;
 import pe.edu.upc.inmovision.entities.Contacto;
 import pe.edu.upc.inmovision.entities.Provincia;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +13,8 @@ public interface IContactoService {
     public Optional<Contacto> buscarPorId(int id);
     public void delete(int id);
     public void update(Contacto contacto);
-    public List<Object[]> cantidadContactoPorUsuario();
-    public List<Object[]> cantidadContactoPorPropiedad();
+    List<Contacto> buscarPorNombre(String nombre);
+    List<Contacto> buscarPorFecha(LocalDate fecha);
+
 
 }

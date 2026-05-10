@@ -5,6 +5,7 @@ import pe.edu.upc.inmovision.entities.Contacto;
 import pe.edu.upc.inmovision.repositories.IContactoRepository;
 import pe.edu.upc.inmovision.serviceinterfaces.IContactoService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -40,12 +41,12 @@ public class ContactoServicesImplement implements IContactoService {
     }
 
     @Override
-    public List<Object[]> cantidadContactoPorUsuario() {
-        return cR.cantidadContactoPorUsuario();
+    public List<Contacto> buscarPorNombre(String nombre) {
+        return cR.buscarPorNombre(nombre);
     }
 
     @Override
-    public List<Object[]> cantidadContactoPorPropiedad() {
-        return cR.cantidadContactoPorPropiedad();
+    public List<Contacto> buscarPorFecha(LocalDate fecha) {
+        return cR.buscarPorFecha(fecha);
     }
 }
