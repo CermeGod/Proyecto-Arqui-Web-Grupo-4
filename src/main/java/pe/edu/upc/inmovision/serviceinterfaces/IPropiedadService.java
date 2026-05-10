@@ -11,7 +11,4 @@ public interface IPropiedadService {
     public Optional<Propiedades> listById(int id);
     public void delete(int id);
     public void update(Propiedades propiedades);
-    public List<Object[]> propiedadesPorDistrito();
-    public List<Object[]> propiedadesPorContacto();
-
 }
