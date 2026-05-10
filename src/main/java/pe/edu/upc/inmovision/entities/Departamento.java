@@ -8,15 +8,10 @@ public class Departamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int departamentoId;
+    @Column(nullable = false)
     private String name;
 
-    public Departamento() {
-    }
 
-    public Departamento(int departamentoId, String name) {
-        this.departamentoId = departamentoId;
-        this.name = name;
-    }
 
     public int getDepartamentoId() {
         return departamentoId;

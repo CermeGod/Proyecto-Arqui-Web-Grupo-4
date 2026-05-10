@@ -7,6 +7,7 @@ public class RecomendacionesDTO {
     private int recomendacionId;
     private int propiedadId;
     private int usuarioId;
+    private RecomendacionPropiedadDTO propiedad;
 
     public int getRecomendacionId() {
         return recomendacionId;
@@ -30,5 +31,13 @@ public class RecomendacionesDTO {
 
     public void setUsuarioId(int usuarioId) {
         this.usuarioId = usuarioId;
+    }
+
+    public RecomendacionPropiedadDTO getPropiedad() {
+        return propiedad;
+    }
+
+    public void setPropiedad(RecomendacionPropiedadDTO propiedad) {
+        this.propiedad = propiedad;
     }
 }

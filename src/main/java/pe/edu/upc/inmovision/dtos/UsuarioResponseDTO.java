@@ -1,10 +1,11 @@
 package pe.edu.upc.inmovision.dtos;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class UsuarioResponseDTO {
     private int usuarioId;
-    private int rolId;
+    private List<RolDTO> roles;
     private String nombre;
     private String apellido;
     private String correo;
@@ -20,12 +21,12 @@ public class UsuarioResponseDTO {
         this.usuarioId = usuarioId;
     }
 
-    public int getRolId() {
-        return rolId;
+    public List<RolDTO> getRoles() {
+        return roles;
     }
 
-    public void setRolId(int rolId) {
-        this.rolId = rolId;
+    public void setRoles(List<RolDTO> roles) {
+        this.roles = roles;
     }
 
     public String getNombre() {

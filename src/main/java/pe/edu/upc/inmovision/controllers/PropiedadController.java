@@ -1,26 +1,31 @@
 package pe.edu.upc.inmovision.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.GeneralPropiedadDTO;
+import pe.edu.upc.inmovision.dtos.QuantityPropiedadxContactoDTO;
+import pe.edu.upc.inmovision.dtos.QuantityPropiedadxDistritoDTO;
 import pe.edu.upc.inmovision.entities.Distrito;
 import pe.edu.upc.inmovision.entities.Propiedades;
 import pe.edu.upc.inmovision.entities.Usuario;
 import pe.edu.upc.inmovision.serviceimplements.DistritoServiceImplement;
 import pe.edu.upc.inmovision.serviceimplements.IUsuarioServiceImplement;
 import pe.edu.upc.inmovision.serviceimplements.PropiedadServiceImplement;
-import pe.edu.upc.inmovision.serviceimplements.ProvinciaServiceImplement;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/Inmovision/propiedad")
+@SecurityRequirement(name = "bearerAuth")
 public class PropiedadController {
 
     @Autowired
@@ -30,7 +35,8 @@ public class PropiedadController {
     @Autowired
     private IUsuarioServiceImplement uS;
 
-    @PostMapping("/registrar")
+    @PostMapping("/registrar-propiedad")
+    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
     public ResponseEntity<?> registrar(@RequestBody GeneralPropiedadDTO dto)
     {
         ModelMapper m = new ModelMapper();
@@ -62,7 +68,8 @@ public class PropiedadController {
         return ResponseEntity.ok(lista);
     }
 
-    @PutMapping
+    @PutMapping("/modificar-propiedad")
+    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
     public ResponseEntity<String>actualizar(@RequestBody GeneralPropiedadDTO dto) {
         Optional<Propiedades> existente = pS.listById(dto.getPropiedadId());
         if (existente.isEmpty()) {
@@ -94,7 +101,10 @@ public class PropiedadController {
         return ResponseEntity.ok("Propiedad actualizada");
 
     }
-    @DeleteMapping("borrar-propiedad/{id}")
+
+    @DeleteMapping("/eliminar-propiedad/{id}")
+    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
+
     public ResponseEntity<String> borrarPropiedad(@PathVariable int id)
     {
         Optional<Propiedades> existe=pS.listById(id);
@@ -106,5 +116,47 @@ public class PropiedadController {
         else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Propiedad no encontrada");
         }
+    }
+
+    @GetMapping("/propiedadesXdistrito")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> propiedadesPorDistrito() {
+        List<Object[]> lista = pS.propiedadesPorDistrito();
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay registros");
+        }
+
+        List<QuantityPropiedadxDistritoDTO> respuesta = new ArrayList<>();
+
+        for (Object[] fila : lista) {
+            QuantityPropiedadxDistritoDTO dto = new QuantityPropiedadxDistritoDTO();
+            dto.setNombre((String) fila[0]);
+            dto.setCantidad(((Number) fila[1]).intValue());
+            respuesta.add(dto);
+        }
+
+        return ResponseEntity.ok(respuesta);
+    }
+
+    @GetMapping("/propiedadesXcontacto")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> propiedadesPorContacto() {
+        List<Object[]> lista = pS.propiedadesPorContacto();
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay registros");
+        }
+
+        List<QuantityPropiedadxContactoDTO> respuesta = new ArrayList<>();
+
+        for (Object[] fila : lista) {
+            QuantityPropiedadxContactoDTO dto = new QuantityPropiedadxContactoDTO();
+            dto.setTitulo((String) fila[0]);
+            dto.setCantidadXcontactos(((Number) fila[1]).intValue());
+            respuesta.add(dto);
+        }
+
+        return ResponseEntity.ok(respuesta);
     }
 }
