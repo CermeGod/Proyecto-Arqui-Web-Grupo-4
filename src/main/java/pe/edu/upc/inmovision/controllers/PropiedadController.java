@@ -119,6 +119,7 @@ public class PropiedadController {
     }
 
     @GetMapping("/propiedadesXdistrito")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> propiedadesPorDistrito() {
         List<Object[]> lista = pS.propiedadesPorDistrito();
 
@@ -139,6 +140,7 @@ public class PropiedadController {
     }
 
     @GetMapping("/propiedadesXcontacto")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> propiedadesPorContacto() {
         List<Object[]> lista = pS.propiedadesPorContacto();
 
