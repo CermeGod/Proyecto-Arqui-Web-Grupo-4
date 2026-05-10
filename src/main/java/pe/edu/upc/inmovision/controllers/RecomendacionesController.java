@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.RecomendacionesDTO;
 import pe.edu.upc.inmovision.entities.Recomendaciones;
 import pe.edu.upc.inmovision.serviceinterfaces.IRecomendacionesService;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,12 +66,14 @@ public class RecomendacionesController {
     }
 
     @GetMapping("/cantidad-compartidos/{idPropiedad}")
+    @PreAuthorize("hasAnyAuthority('Cliente', 'Administrador')")
     public ResponseEntity<Integer> contarCompartidos(@PathVariable int idPropiedad){
         Integer cantidad = rS.contarPorPropiedad(idPropiedad);
         return ResponseEntity.ok(cantidad);
     }
 
     @GetMapping("/compartidos-por-usuario/{idUsuario}")
+    @PreAuthorize("hasAnyAuthority('Cliente', 'Administrador')")
     public ResponseEntity<?> compartidosPorUsuario(@PathVariable int idUsuario){
         ModelMapper m = new ModelMapper();
         List<RecomendacionesDTO> lista = rS.buscarPorUsuario(idUsuario).stream()
