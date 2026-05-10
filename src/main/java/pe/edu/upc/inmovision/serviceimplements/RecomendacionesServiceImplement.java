@@ -33,4 +33,10 @@ public class RecomendacionesServiceImplement implements IRecomendacionesService 
     public Optional<Recomendaciones> listById(int id) {
         return rR.findById(id);
     }
+
+    @Override
+    public Integer contarPorPropiedad(int idPropiedad) {return rR.contarPorPropiedad(idPropiedad);}
+
+    @Override
+    public List<Recomendaciones> buscarPorUsuario(int idUsuario) {return rR.buscarPorUsuario(idUsuario);}
 }

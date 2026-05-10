@@ -39,5 +39,15 @@ public class PropiedadServiceImplement implements IPropiedadService {
         pR.save(propiedades);
     }
 
+    @Override
+    public List<Object[]> propiedadesPorDistrito() {
+        return pR.propiedadesPorDistrito();
+    }
+
+    @Override
+    public List<Object[]> propiedadesPorContacto() {
+        return pR.propiedadesPorContacto();
+    }
+
 
 }
