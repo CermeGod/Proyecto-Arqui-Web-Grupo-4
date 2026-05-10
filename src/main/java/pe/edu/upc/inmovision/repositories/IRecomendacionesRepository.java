@@ -13,14 +13,13 @@ public interface IRecomendacionesRepository extends JpaRepository<Recomendacione
 
     @Query(value = "SELECT COUNT(*) \n" +
             "FROM recomendaciones \n" +
-            "WHERE propiedadId = :idPropiedad", nativeQuery = true)
+            "WHERE propiedad_id = :idPropiedad", nativeQuery = true)
     Integer contarPorPropiedad(@Param("idPropiedad") int idPropiedad);
 
     @Query(value = "SELECT r.* \n" +
             "FROM recomendaciones r \n" +
-            "INNER JOIN propiedades p ON r.propiedadId = p.propiedadId \n" +
-            "WHERE r.usuarioId = :idUsuario \n" +
+            "INNER JOIN propiedades p ON r.propiedad_id = p.propiedad_id \n" +
+            "WHERE r.usuario_id = :idUsuario \n" +
             "ORDER BY p.titulo ASC", nativeQuery = true)
     List<Recomendaciones> buscarPorUsuario(@Param("idUsuario") int idUsuario);
-
 }
