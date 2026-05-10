@@ -2,8 +2,8 @@ package pe.edu.upc.inmovision.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pe.edu.upc.inmovision.entities.Calificacion;
+import pe.edu.upc.inmovision.entities.Coleccion;
 
 @Repository
-public interface ICalificacionRepository extends JpaRepository<Calificacion,Integer> {
+public interface IColeccionRepository extends JpaRepository<Coleccion,Integer> {
 }
