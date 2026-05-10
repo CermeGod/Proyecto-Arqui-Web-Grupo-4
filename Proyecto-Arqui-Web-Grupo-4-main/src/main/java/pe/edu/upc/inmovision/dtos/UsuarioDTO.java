@@ -2,11 +2,12 @@ package pe.edu.upc.inmovision.dtos;
 
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 public class UsuarioDTO {
     private int usuarioId;
-    private int rolId;
+    private List<RolDTO> roles;
     private String nombre;
     private String apellido;
     private String correo;
@@ -14,9 +15,8 @@ public class UsuarioDTO {
     private String telefono;
     private String fotoUrl;
     private LocalDate fechaRegistro;
+    private Boolean enabled;
 
-    public UsuarioDTO() {
-    }
 
     public int getUsuarioId() {
         return usuarioId;
@@ -82,11 +82,19 @@ public class UsuarioDTO {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public int getRolId() {
-        return rolId;
+    public List<RolDTO> getRoles() {
+        return roles;
     }
 
-    public void setRolId(int rolId) {
-        this.rolId = rolId;
+    public void setRoles(List<RolDTO> roles) {
+        this.roles = roles;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }

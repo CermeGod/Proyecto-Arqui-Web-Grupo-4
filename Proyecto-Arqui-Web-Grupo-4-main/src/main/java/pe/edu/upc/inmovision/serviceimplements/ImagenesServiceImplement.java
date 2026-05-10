@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.edu.upc.inmovision.entities.Imagenes;
 import pe.edu.upc.inmovision.repositories.IImagenesRepository;
-import pe.edu.upc.inmovision.serviceinterfaces.IImagenesService;
 
 import java.util.List;
 import java.util.Optional;

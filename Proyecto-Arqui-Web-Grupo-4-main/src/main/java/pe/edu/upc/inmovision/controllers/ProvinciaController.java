@@ -1,9 +1,11 @@
 package pe.edu.upc.inmovision.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.ProvinciaDTO;
 import pe.edu.upc.inmovision.entities.Departamento;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/Inmovision/provincia")
+@SecurityRequirement(name = "bearerAuth")
 public class ProvinciaController {
     @Autowired
     private ProvinciaServiceImplement pS;
@@ -24,10 +27,11 @@ public class ProvinciaController {
     private DepartamentoServiceImplement dS;
 
     @PostMapping("/registrar-provincia")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> registrar(@RequestBody ProvinciaDTO dto)
     {
         ModelMapper m=new ModelMapper();
-        Optional<Departamento> existente= dS.buscarPorId(dto.getProvinciaId());
+        Optional<Departamento> existente= dS.buscarPorId(dto.getDepartamentoId());
         if(existente.isPresent())
         {
             Provincia p=m.map(dto,Provincia.class);
@@ -56,6 +60,7 @@ public class ProvinciaController {
     }
 
     @DeleteMapping("/eliminar-provincia/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Provincia> provincia=pS.buscarPorId(id);
@@ -70,7 +75,9 @@ public class ProvinciaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Provincia no encontrada");
         }
     }
-    @PutMapping
+
+    @PutMapping("/modificar-provincia")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String>actualizar(@RequestBody ProvinciaDTO dto)
     {
         Optional<Provincia>existente=pS.buscarPorId(dto.getProvinciaId());

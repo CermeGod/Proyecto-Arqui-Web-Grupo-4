@@ -1,10 +1,12 @@
 package pe.edu.upc.inmovision.controllers;
 
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.ContactoDTO;
 import pe.edu.upc.inmovision.dtos.GeneralPropiedadDTO;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/Inmovision/contacto")
+@SecurityRequirement(name = "bearerAuth")
 public class ContactoController {
     @Autowired
     private ContactoServicesImplement cS;
@@ -34,6 +37,7 @@ public class ContactoController {
     private IUsuarioServiceImplement uS;
 
     @PostMapping("/registrar-contacto")
+    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
     public ResponseEntity<?> registrar(@RequestBody ContactoDTO dto)
     {
         ModelMapper m = new ModelMapper();
@@ -53,18 +57,20 @@ public class ContactoController {
     }
 
     @GetMapping("/listar-contacto")
+    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
     public ResponseEntity<?> listarcontacto() {
         ModelMapper m = new ModelMapper();
         List<ContactoDTO> lista = cS.listar().stream()
                 .map(y -> m.map(y, ContactoDTO.class))
                 .collect(Collectors.toList());
         if (lista.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No hay contacto registradas");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay contactos registrados");
         }
         return ResponseEntity.ok(lista);
     }
 
     @DeleteMapping("/eliminar-contacto/{id}")
+    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Contacto> contacto=cS.buscarPorId(id);
@@ -76,7 +82,7 @@ public class ContactoController {
         }
         else
         {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contacto no encontrad0");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contacto no encontrado");
         }
     }
 

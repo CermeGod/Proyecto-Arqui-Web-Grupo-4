@@ -10,4 +10,7 @@ public interface IRecomendacionesService {
     public List<Recomendaciones> listar();
     public void delete(int id);
     public Optional<Recomendaciones> listById(int id);
+    public Integer contarPorPropiedad(int idPropiedad);
+    public List<Recomendaciones> buscarPorUsuario(int idUsuario);
+
 }
