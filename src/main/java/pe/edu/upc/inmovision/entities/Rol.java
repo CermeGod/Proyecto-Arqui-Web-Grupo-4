@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name ="rol",uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
-    public class Rol implements Serializable {
+public class Rol implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int rolId;

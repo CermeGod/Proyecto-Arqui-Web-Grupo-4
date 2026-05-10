@@ -45,4 +45,5 @@ public interface IUsuarioRepository extends JpaRepository<Usuario,Integer> {
             "ORDER BY total_propiedades DESC",
             nativeQuery = true)
     List<Object[]> listarPropietariosConPropiedades();
+
 }
