@@ -21,6 +21,7 @@ import pe.edu.upc.inmovision.serviceimplements.DepartamentoServiceImplement;
 import pe.edu.upc.inmovision.serviceimplements.IUsuarioServiceImplement;
 import pe.edu.upc.inmovision.serviceimplements.PropiedadServiceImplement;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -85,7 +86,43 @@ public class ContactoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contacto no encontrado");
         }
     }
+    @GetMapping("/buscar-por-nombre/{nombre}")
+    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
+    public ResponseEntity<?> buscarPorNombre(@PathVariable String nombre) {
 
+        ModelMapper m = new ModelMapper();
+
+        List<ContactoDTO> lista = cS.buscarPorNombre(nombre)
+                .stream()
+                .map(x -> m.map(x, ContactoDTO.class))
+                .collect(Collectors.toList());
+
+        if(lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron contactos");
+        }
+
+        return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping("/buscar-por-fecha/{fecha}")
+    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
+    public ResponseEntity<?> buscarPorFecha(@PathVariable LocalDate fecha) {
+
+        ModelMapper m = new ModelMapper();
+
+        List<ContactoDTO> lista = cS.buscarPorFecha(fecha)
+                .stream()
+                .map(x -> m.map(x, ContactoDTO.class))
+                .collect(Collectors.toList());
+
+        if(lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron contactos en esa fecha");
+        }
+
+        return ResponseEntity.ok(lista);
+    }
 
 
 }
