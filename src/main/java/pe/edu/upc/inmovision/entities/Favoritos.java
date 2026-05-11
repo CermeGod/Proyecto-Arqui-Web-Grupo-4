@@ -63,4 +63,3 @@ public class Favoritos {
         this.coleccion = coleccion;
     }
 }
-
