@@ -44,12 +44,10 @@ public class RecomendacionesController {
 
             Recomendaciones rec = rS.insertar(r);
 
-            // respuesta
             RecomendacionesDTO responseDTO = new RecomendacionesDTO();
             responseDTO.setRecomendacionId(rec.getRecomendacionId());
             responseDTO.setUsuarioId(rec.getUsuario().getUsuarioId());
             responseDTO.setPropiedadId(rec.getPropiedad().getPropiedadId());
-            // 🔥 AQUÍ ESTABA EL ERROR
             RecomendacionPropiedadDTO pDTO = new RecomendacionPropiedadDTO();
             pDTO.setTitulo(rec.getPropiedad().getTitulo());
             pDTO.setPrecio(rec.getPropiedad().getPrecio());
@@ -79,7 +77,6 @@ public class RecomendacionesController {
                     dto.setUsuarioId(r.getUsuario().getUsuarioId());
                     dto.setPropiedadId(r.getPropiedad().getPropiedadId());
 
-                    //  DTO de propiedad
                     RecomendacionPropiedadDTO pDTO = new RecomendacionPropiedadDTO();
                     pDTO.setTitulo(r.getPropiedad().getTitulo());
                     pDTO.setPrecio(r.getPropiedad().getPrecio());
@@ -107,6 +104,43 @@ public class RecomendacionesController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Recomendacion no encontrada");
         }
     }
+
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping("/cantidad-compartidos/{idPropiedad}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CLIENTE')")
+    public ResponseEntity<Integer> contarCompartidos(@PathVariable int idPropiedad) {
+        Integer cantidad = rS.contarPorPropiedad(idPropiedad);
+        return ResponseEntity.ok(cantidad);
+    }
+
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping("/compartidos-por-usuario/{idUsuario}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CLIENTE')")
+    public ResponseEntity<?> compartidosPorUsuario(@PathVariable int idUsuario) {
+        List<RecomendacionesDTO> lista = rS.buscarPorUsuario(idUsuario).stream()
+                .map(r -> {
+                    RecomendacionesDTO dto = new RecomendacionesDTO();
+                    dto.setRecomendacionId(r.getRecomendacionId());
+                    dto.setUsuarioId(r.getUsuario().getUsuarioId());
+                    dto.setPropiedadId(r.getPropiedad().getPropiedadId());
+
+                    RecomendacionPropiedadDTO pDTO = new RecomendacionPropiedadDTO();
+                    pDTO.setTitulo(r.getPropiedad().getTitulo());
+                    pDTO.setPrecio(r.getPropiedad().getPrecio());
+                    pDTO.setDireccion(r.getPropiedad().getDireccion());
+
+                    dto.setPropiedad(pDTO);
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body("El usuario no ha compartido nada todavía");
+        }
+        return ResponseEntity.ok(lista);
+    }
+
 
 
 }
