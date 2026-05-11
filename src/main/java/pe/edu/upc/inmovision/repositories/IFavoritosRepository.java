@@ -9,8 +9,11 @@ import java.util.List;
 
 @Repository
 public interface IFavoritosRepository extends JpaRepository<Favoritos,Integer> {
-    @Query(value = "SELECT usuario_id, COUNT(*) " +
-            "FROM favoritos " +
-            "GROUP BY usuario_id", nativeQuery = true)
-    public List<Object[]> cantidadFavoritosPorUsuario();
+    @Query(value =
+            "SELECT u.nombre, COUNT(f.favoritos_id) AS cantidad " +
+                    "FROM favoritos f " +
+                    "JOIN usuario u ON u.usuario_id = f.usuario_id " +
+                    "GROUP BY u.nombre",
+            nativeQuery = true)
+    List<Object[]> cantidadFavoritosPorUsuario();
 }

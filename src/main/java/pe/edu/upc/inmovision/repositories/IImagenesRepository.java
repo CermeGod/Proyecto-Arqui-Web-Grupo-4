@@ -9,8 +9,11 @@ import java.util.List;
 
 @Repository
 public interface IImagenesRepository extends JpaRepository<Imagenes,Integer> {
-    @Query(value = "SELECT propiedad_id, COUNT(*) " +
-            "FROM imagenes " +
-            "GROUP BY propiedad_id", nativeQuery = true)
-    public List<Object[]> cantidadImagenesPorPropiedad();
+    @Query(value =
+            "SELECT p.titulo, COUNT(i.imagenes_id) AS total_imagenes " +
+                    "FROM imagenes i " +
+                    "JOIN propiedades p ON p.propiedad_id = i.propiedad_id " +
+                    "GROUP BY p.titulo",
+            nativeQuery = true)
+    List<Object[]> cantidadImagenesPorPropiedad();
 }
