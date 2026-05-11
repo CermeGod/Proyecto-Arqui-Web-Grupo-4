@@ -105,6 +105,41 @@ public class RecomendacionesController {
         }
     }
 
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping("/cantidad-compartidos/{idPropiedad}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CLIENTE')")
+    public ResponseEntity<Integer> contarCompartidos(@PathVariable int idPropiedad) {
+        Integer cantidad = rS.contarPorPropiedad(idPropiedad);
+        return ResponseEntity.ok(cantidad);
+    }
+
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping("/compartidos-por-usuario/{idUsuario}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CLIENTE')")
+    public ResponseEntity<?> compartidosPorUsuario(@PathVariable int idUsuario) {
+        List<RecomendacionesDTO> lista = rS.buscarPorUsuario(idUsuario).stream()
+                .map(r -> {
+                    RecomendacionesDTO dto = new RecomendacionesDTO();
+                    dto.setRecomendacionId(r.getRecomendacionId());
+                    dto.setUsuarioId(r.getUsuario().getUsuarioId());
+                    dto.setPropiedadId(r.getPropiedad().getPropiedadId());
+
+                    RecomendacionPropiedadDTO pDTO = new RecomendacionPropiedadDTO();
+                    pDTO.setTitulo(r.getPropiedad().getTitulo());
+                    pDTO.setPrecio(r.getPropiedad().getPrecio());
+                    pDTO.setDireccion(r.getPropiedad().getDireccion());
+
+                    dto.setPropiedad(pDTO);
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body("El usuario no ha compartido nada todavía");
+        }
+        return ResponseEntity.ok(lista);
+    }
 
 
 
