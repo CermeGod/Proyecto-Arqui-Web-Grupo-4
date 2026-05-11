@@ -44,12 +44,10 @@ public class RecomendacionesController {
 
             Recomendaciones rec = rS.insertar(r);
 
-            // respuesta
             RecomendacionesDTO responseDTO = new RecomendacionesDTO();
             responseDTO.setRecomendacionId(rec.getRecomendacionId());
             responseDTO.setUsuarioId(rec.getUsuario().getUsuarioId());
             responseDTO.setPropiedadId(rec.getPropiedad().getPropiedadId());
-            // 🔥 AQUÍ ESTABA EL ERROR
             RecomendacionPropiedadDTO pDTO = new RecomendacionPropiedadDTO();
             pDTO.setTitulo(rec.getPropiedad().getTitulo());
             pDTO.setPrecio(rec.getPropiedad().getPrecio());
@@ -79,7 +77,6 @@ public class RecomendacionesController {
                     dto.setUsuarioId(r.getUsuario().getUsuarioId());
                     dto.setPropiedadId(r.getPropiedad().getPropiedadId());
 
-                    //  DTO de propiedad
                     RecomendacionPropiedadDTO pDTO = new RecomendacionPropiedadDTO();
                     pDTO.setTitulo(r.getPropiedad().getTitulo());
                     pDTO.setPrecio(r.getPropiedad().getPrecio());
@@ -107,6 +104,8 @@ public class RecomendacionesController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Recomendacion no encontrada");
         }
     }
+
+
 
 
 }
