@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pe.edu.upc.inmovision.entities.Contacto;
 @Repository
-public interface IContactoRepository extends JpaRepository<Contacto,Integer> {
+public interface    IContactoRepository extends JpaRepository<Contacto,Integer> {
 }
