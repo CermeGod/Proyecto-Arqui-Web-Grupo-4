@@ -39,7 +39,7 @@ public class JwtTokenUtil {
 
     private Claims getAllClaims(String token) {
         return Jwts.parser()
-                .setSigningKey(secret)
+                .setSigningKey(secret.getBytes())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -68,14 +68,9 @@ public class JwtTokenUtil {
         );
     }
 
-    private String createToken(
-            Map<String, Object> claims,
-            String username
-    ) {
-
+    private String createToken(Map<String, Object> claims, String username) {
         Date now = new Date();
-        Date expiration =
-                new Date(now.getTime() + TOKEN_VALIDITY);
+        Date expiration = new Date(now.getTime() + TOKEN_VALIDITY);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -83,8 +78,9 @@ public class JwtTokenUtil {
                 .setIssuedAt(now)
                 .setExpiration(expiration)
                 .signWith(
+                        // Cambiamos Base64.getDecoder() por .getBytes()
                         new SecretKeySpec(
-                                Base64.getDecoder().decode(secret),
+                                secret.getBytes(),
                                 SignatureAlgorithm.HS512.getJcaName()
                         )
                 )
