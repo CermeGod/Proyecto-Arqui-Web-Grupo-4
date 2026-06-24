@@ -27,7 +27,7 @@ public class ProvinciaController {
     private DepartamentoServiceImplement dS;
 
     @PostMapping("/registrar-provincia")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> registrar(@RequestBody ProvinciaDTO dto)
     {
         ModelMapper m=new ModelMapper();
@@ -60,7 +60,7 @@ public class ProvinciaController {
     }
 
     @DeleteMapping("/eliminar-provincia/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Provincia> provincia=pS.buscarPorId(id);
@@ -77,7 +77,7 @@ public class ProvinciaController {
     }
 
     @PutMapping("/modificar-provincia")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String>actualizar(@RequestBody ProvinciaDTO dto)
     {
         Optional<Provincia>existente=pS.buscarPorId(dto.getProvinciaId());

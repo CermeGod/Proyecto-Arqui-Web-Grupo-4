@@ -103,7 +103,7 @@ public class PropiedadController {
     }
 
     @DeleteMapping("/eliminar-propiedad/{id}")
-    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
+
 
     public ResponseEntity<String> borrarPropiedad(@PathVariable int id)
     {
@@ -119,7 +119,7 @@ public class PropiedadController {
     }
 
     @GetMapping("/propiedadesXdistrito")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PROPIETARIO')")
     public ResponseEntity<?> propiedadesPorDistrito() {
         List<Object[]> lista = pS.propiedadesPorDistrito();
 

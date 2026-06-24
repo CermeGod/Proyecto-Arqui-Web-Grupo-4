@@ -20,7 +20,7 @@ public class DepartamentoController {
     private DepartamentoServiceImplement dS;
 
     @PostMapping("/registrar-departamento")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Departamento> registrar(@RequestBody Departamento departamento)
     {
         Departamento d=dS.insertar(departamento);
@@ -39,7 +39,7 @@ public class DepartamentoController {
     }
 
     @DeleteMapping("/eliminar-departamento/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Departamento> departamento=dS.buscarPorId(id);
@@ -56,7 +56,7 @@ public class DepartamentoController {
     }
 
     @PutMapping("/modificar-departamento")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String>actualizar(@RequestBody Departamento departamento)
     {
         Optional<Departamento>existente=dS.buscarPorId(departamento.getDepartamentoId());

@@ -28,22 +28,17 @@ public class ColeccionController {
     public ResponseEntity<?> registrar(@RequestBody ColeccionDTO dto)
     {
         ModelMapper m=new ModelMapper();
-        Optional<?> existente= coS.listById(dto.getColeccionId());
-        if(existente.isPresent())
-        {
+
+
+
             Coleccion c=m.map(dto,Coleccion.class);
             Coleccion cr=coS.insertar(c);
             ColeccionDTO responseDTO=m.map(cr,ColeccionDTO.class);
             return  ResponseEntity.ok(responseDTO);
-        }
-        else
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Coleccion no encontrada");
-        }
     }
 
     @GetMapping("/listar-coleccion")
-    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
+    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
     public ResponseEntity<?> listarcoleccion()
     {
         ModelMapper m=new ModelMapper();

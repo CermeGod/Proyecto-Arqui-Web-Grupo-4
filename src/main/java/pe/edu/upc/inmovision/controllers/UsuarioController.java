@@ -30,22 +30,22 @@ public class UsuarioController {
     private IRolService rS;
 
     @PostMapping("/registrar-usuario")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> insertar(@RequestBody UsuarioDTO dto) {
         ModelMapper m = new ModelMapper();
-        for (RolDTO roldto : dto.getRoles()) {
-            Optional<Rol> listado = rS.listById(roldto.getRolId());
-            if (listado.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rol no encontrado");
-            }
-        }
+     // for (RolDTO roldto : dto.getRoles()) {
+     //     Optional<Rol> listado = rS.listById(roldto.getRolId());
+     //     if (listado.isEmpty()) {
+     //         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rol no encontrado");
+     //     }
+     // }
         Usuario u = m.map(dto, Usuario.class);
         Usuario usuario = uS.insertar(u);
         UsuarioDTO responseDTO = m.map(usuario, UsuarioDTO.class);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
     @GetMapping("/listar-usuario")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> listar()
     {
         ModelMapper m= new ModelMapper();
@@ -59,7 +59,7 @@ public class UsuarioController {
         return ResponseEntity.ok(listado);
     }
     @DeleteMapping("/eliminar-usuario/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Usuario> usuario=uS.listById(id);
@@ -74,7 +74,7 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
         }
     }
-    @PutMapping("/modificar-usuario")
+    //@PutMapping("/modificar-usuario")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String>actualizar(@RequestBody UsuarioDTO dto)
     {
@@ -117,7 +117,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/con-propiedades")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> obtenerUsuariosConPropiedades() {
         List<Object[]>listarCantidad=uS.listarPropietariosConPropiedades();
         if(listarCantidad.isEmpty())
@@ -138,7 +138,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/listar-cantidad-usuarios-rol")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> obtenerUsuariosPorRol() {
         List<Object[]>listarCantUsuariosRol=uS.contarUsuariosPorRol();
         if(listarCantUsuariosRol.isEmpty())

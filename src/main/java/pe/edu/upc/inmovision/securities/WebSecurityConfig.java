@@ -53,16 +53,23 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        //Desde Spring Boot 3.1+
-        httpSecurity
+        httpSecurity.cors(Customizer.withDefaults()) // ¡Importante para que Spring Security integre CorsConfig!
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(req -> req
+                        // TODAS las rutas liberadas temporalmente para pruebas
+                        .anyRequest().permitAll()
+                )
+        /*
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/login",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
-                                "/v3/api-docs/**").permitAll()
+                                "/v3/api-docs/**",
+                                "/Inmovision/**",
+                                "/Inmovision/propiedad/eliminar-propiedad/{id}").permitAll()
                         .anyRequest().authenticated()
-                )
+                )*/
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .exceptionHandling(e -> e.authenticationEntryPoint(jwtAuthenticationEntryPoint))
