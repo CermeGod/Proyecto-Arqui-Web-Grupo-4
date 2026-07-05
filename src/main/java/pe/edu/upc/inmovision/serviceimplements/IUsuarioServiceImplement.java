@@ -33,6 +33,11 @@ public class IUsuarioServiceImplement implements IUsuarioService {
         uR.deleteById(id);
     }
 
+    @Override
+    public void update(Usuario u) {
+        uR.save(u);
+    }
+
     /*@Override
     public List<Object[]> obtenerUsuariosConPropiedades() {
         return uR.obtenerUsuariosConPropiedades();
