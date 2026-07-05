@@ -38,4 +38,9 @@ public class DistritoServiceImplement implements IDistritoService {
     public void update(Distrito distrito) {
     dR.save(distrito);
     }
+
+    @Override
+    public List<Distrito> listarporprovincia(int idProvincia) {
+        return dR.findByProvinciaProvinciaId(idProvincia);
+    }
 }

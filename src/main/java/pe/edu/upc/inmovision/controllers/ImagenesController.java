@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.entities.Imagenes;
 import pe.edu.upc.inmovision.serviceimplements.ImagenesServiceImplement;
@@ -21,7 +21,7 @@ public class ImagenesController {
     private ImagenesServiceImplement iS;
 
     @PostMapping("/registrar-imagen")
-    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
+    //@PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
     public ResponseEntity<Imagenes> registrar(@RequestBody Imagenes imagen) {
         Imagenes i = iS.insertar(imagen);
         return ResponseEntity.status(HttpStatus.CREATED).body(i);
@@ -38,7 +38,7 @@ public class ImagenesController {
     }
 
     @DeleteMapping("/eliminar-imagen/{id}")
-    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
+    //@PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
     public ResponseEntity<String> eliminar(@PathVariable int id) {
         Optional<Imagenes> imagen = iS.buscarPorId(id);
 
@@ -52,7 +52,7 @@ public class ImagenesController {
     }
 
     @GetMapping("/cantidad-imagenes-por-propiedad")
-    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
+    //@PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
     public ResponseEntity<?> cantidadImagenesPorPropiedad() {
 
         List<Object[]> lista = iS.cantidadImagenesPorPropiedad();

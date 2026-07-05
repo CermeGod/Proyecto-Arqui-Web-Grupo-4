@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.GeneralPropiedadDTO;
 import pe.edu.upc.inmovision.dtos.QuantityPropiedadxContactoDTO;
@@ -36,7 +36,7 @@ public class PropiedadController {
     private IUsuarioServiceImplement uS;
 
     @PostMapping("/registrar-propiedad")
-    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
+    //@PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
     public ResponseEntity<?> registrar(@RequestBody GeneralPropiedadDTO dto)
     {
         ModelMapper m = new ModelMapper();
@@ -69,7 +69,7 @@ public class PropiedadController {
     }
 
     @PutMapping("/modificar-propiedad")
-    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
+    //@PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
     public ResponseEntity<String>actualizar(@RequestBody GeneralPropiedadDTO dto) {
         Optional<Propiedades> existente = pS.listById(dto.getPropiedadId());
         if (existente.isEmpty()) {
@@ -103,7 +103,7 @@ public class PropiedadController {
     }
 
     @DeleteMapping("/eliminar-propiedad/{id}")
-    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
+    //@PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
 
     public ResponseEntity<String> borrarPropiedad(@PathVariable int id)
     {
@@ -119,7 +119,7 @@ public class PropiedadController {
     }
 
     @GetMapping("/propiedadesXdistrito")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> propiedadesPorDistrito() {
         List<Object[]> lista = pS.propiedadesPorDistrito();
 
@@ -140,7 +140,7 @@ public class PropiedadController {
     }
 
     @GetMapping("/propiedadesXcontacto")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> propiedadesPorContacto() {
         List<Object[]> lista = pS.propiedadesPorContacto();
 

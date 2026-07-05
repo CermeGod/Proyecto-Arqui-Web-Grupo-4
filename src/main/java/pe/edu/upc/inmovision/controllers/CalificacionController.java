@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.CalificacionDTO;
 import pe.edu.upc.inmovision.dtos.ColeccionDTO;
@@ -36,7 +36,7 @@ public class CalificacionController {
     private IUsuarioService uS;
 
     @PostMapping("/registrar-calificacion")
-    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
+    //@PreAuthorize("hasAuthority('ROLE_CLIENTE')")
     public ResponseEntity<?> registrar(@RequestBody CalificacionDTO dto)
     {
         ModelMapper m=new ModelMapper();
@@ -55,7 +55,7 @@ public class CalificacionController {
     }
 
     @GetMapping("/listar-calificacion")
-    @PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
+    //@PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
     public ResponseEntity<?> listarcalificacion()
     {
         ModelMapper m=new ModelMapper();
@@ -70,7 +70,7 @@ public class CalificacionController {
     }
 
     @DeleteMapping("/eliminar-calificacion/{id}")
-    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
+    //@PreAuthorize("hasAuthority('ROLE_CLIENTE')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Calificacion> calificacion=caS.listById(id);
@@ -85,4 +85,47 @@ public class CalificacionController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Calificacion no encontrada");
         }
     }
+
+    @GetMapping("/listar-calificacion-por-puntuacion/{puntuacion}")
+    public ResponseEntity<?> listarporpuntuacion(@PathVariable int puntuacion)
+    {
+        ModelMapper m=new ModelMapper();
+        List<CalificacionDTO> lista=  caS.listarporpuntuacion(puntuacion).stream()
+            .map(y->m.map(y, CalificacionDTO.class))
+                .collect(Collectors.toList());
+        if(lista.isEmpty())
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay calificaciones registradas");
+        }
+        return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping("/listar-calificacion-por-fecha-reciente")
+    public ResponseEntity<?> listarporfechareciente()
+    {
+        ModelMapper m=new ModelMapper();
+        List<CalificacionDTO> lista=  caS.listarporfechareciente().stream()
+                .map(y->m.map(y, CalificacionDTO.class))
+                .collect(Collectors.toList());
+        if(lista.isEmpty())
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay calificaciones registradas");
+        }
+        return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping("/listar-calificacion-por-fecha-antigua")
+    public ResponseEntity<?> listarporfechaantigua()
+    {
+        ModelMapper m=new ModelMapper();
+        List<CalificacionDTO> lista=  caS.listarporfechaantigua().stream()
+                .map(y->m.map(y, CalificacionDTO.class))
+                .collect(Collectors.toList());
+        if(lista.isEmpty())
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay calificaciones registradas");
+        }
+        return ResponseEntity.ok(lista);
+    }
+    
 }

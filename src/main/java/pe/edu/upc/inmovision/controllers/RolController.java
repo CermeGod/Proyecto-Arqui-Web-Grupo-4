@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.RolDTO;
 import pe.edu.upc.inmovision.entities.Rol;
@@ -21,7 +21,7 @@ public class RolController {
     private IRolServiceImplement rS;
 
     @PostMapping("/registrar-roles")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Rol>registrar(@RequestBody Rol rol)
     {
         Rol r=rS.insertar(rol);
@@ -36,7 +36,7 @@ public class RolController {
     }
 
     @PutMapping("/modificar-rol")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> actualizar(@RequestBody RolDTO dto)
     {
         Optional<Rol> existente=rS.listById(dto.getRolId());
@@ -55,7 +55,7 @@ public class RolController {
     }
 
     @DeleteMapping("/eliminar-rol/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> delete(@PathVariable int id)
     {
         Optional<Rol> existente=rS.listById(id);

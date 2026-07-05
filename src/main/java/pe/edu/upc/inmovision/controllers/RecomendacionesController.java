@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.RecomendacionPropiedadDTO;
 import pe.edu.upc.inmovision.dtos.RecomendacionesDTO;
@@ -31,7 +31,7 @@ public class RecomendacionesController {
     private PropiedadServiceImplement pS;
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/registrar-recomendacion")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> registrar(@RequestBody RecomendacionesDTO dto) {
         Optional<Usuario>listusuario=uS.listById(dto.getUsuarioId());
         Optional<Propiedades>listpropiedades=pS.listById(dto.getPropiedadId());
@@ -66,7 +66,7 @@ public class RecomendacionesController {
     }
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/listar-recomendaciones")
-    @PreAuthorize("hasAnyAuthority('ROLE_CLIENTE','ROLE_ADMIN')")
+    //@PreAuthorize("hasAnyAuthority('ROLE_CLIENTE','ROLE_ADMIN')")
     public ResponseEntity<?> listar() {
         ModelMapper m = new ModelMapper();
         List<RecomendacionesDTO> lista = rS.listar().stream()
@@ -94,7 +94,7 @@ public class RecomendacionesController {
     }
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/eliminar-recomendacion/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_CLIENTE','ROLE_ADMIN')")
+    //@PreAuthorize("hasAnyAuthority('ROLE_CLIENTE','ROLE_ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable int id) {
         Optional<Recomendaciones> recomendacion = rS.listById(id);
         if (recomendacion.isPresent()) {
@@ -107,7 +107,7 @@ public class RecomendacionesController {
 
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/cantidad-compartidos/{idPropiedad}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CLIENTE')")
+    //@PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CLIENTE')")
     public ResponseEntity<Integer> contarCompartidos(@PathVariable int idPropiedad) {
         Integer cantidad = rS.contarPorPropiedad(idPropiedad);
         return ResponseEntity.ok(cantidad);
@@ -115,7 +115,7 @@ public class RecomendacionesController {
 
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/compartidos-por-usuario/{idUsuario}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CLIENTE')")
+    //@PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CLIENTE')")
     public ResponseEntity<?> compartidosPorUsuario(@PathVariable int idUsuario) {
         List<RecomendacionesDTO> lista = rS.buscarPorUsuario(idUsuario).stream()
                 .map(r -> {

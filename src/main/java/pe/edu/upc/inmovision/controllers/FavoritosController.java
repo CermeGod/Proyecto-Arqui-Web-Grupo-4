@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.entities.Favoritos;
 import pe.edu.upc.inmovision.serviceimplements.FavoritosServiceImplement;
@@ -21,7 +21,7 @@ public class FavoritosController {
     private FavoritosServiceImplement fS;
 
     @PostMapping("/registrar-favorito")
-    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
+    //@PreAuthorize("hasAuthority('ROLE_CLIENTE')")
     public ResponseEntity<Favoritos> registrar(@RequestBody Favoritos favoritos) {
         Favoritos f = fS.insertar(favoritos);
         return ResponseEntity.status(HttpStatus.CREATED).body(f);
@@ -38,7 +38,7 @@ public class FavoritosController {
     }
 
     @DeleteMapping("/eliminar-favorito/{id}")
-    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
+    //@PreAuthorize("hasAuthority('ROLE_CLIENTE')")
     public ResponseEntity<String> eliminar(@PathVariable int id) {
         Optional<Favoritos> favorito = fS.buscarPorId(id);
 
@@ -52,7 +52,7 @@ public class FavoritosController {
     }
 
     @GetMapping("/cantidad-favoritos-por-usuario")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> cantidadFavoritosPorUsuario() {
 
         List<Object[]> lista = fS.cantidadFavoritosPorUsuario();

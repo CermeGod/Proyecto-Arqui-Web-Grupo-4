@@ -39,4 +39,10 @@ public class DepartamentoServiceImplement implements IDepartamentoService {
     public void update(Departamento departamento) {
         dR.save(departamento);
     }
+
+    @Override
+    public List<Departamento> listarpornombre(String name) {
+        return dR.findByName(name);
+    }
+
 }

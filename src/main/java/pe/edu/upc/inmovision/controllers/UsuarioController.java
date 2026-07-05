@@ -5,11 +5,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.*;
-import pe.edu.upc.inmovision.entities.Departamento;
-import pe.edu.upc.inmovision.entities.Provincia;
 import pe.edu.upc.inmovision.entities.Rol;
 import pe.edu.upc.inmovision.entities.Usuario;
 import pe.edu.upc.inmovision.serviceinterfaces.IRolService;
@@ -30,22 +28,24 @@ public class UsuarioController {
     private IRolService rS;
 
     @PostMapping("/registrar-usuario")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+   // @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> insertar(@RequestBody UsuarioDTO dto) {
-        ModelMapper m = new ModelMapper();
-        for (RolDTO roldto : dto.getRoles()) {
-            Optional<Rol> listado = rS.listById(roldto.getRolId());
-            if (listado.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rol no encontrado");
-            }
+        ModelMapper m=new ModelMapper();
+        Optional<Rol> existente= rS.listById(dto.getRolId());
+        if(existente.isPresent())
+        {
+            Usuario u=m.map(dto,Usuario.class);
+            Usuario us=uS.insertar(u);
+            UsuarioDTO responseDTO=m.map(us,UsuarioDTO.class);
+            return  ResponseEntity.ok(responseDTO);
         }
-        Usuario u = m.map(dto, Usuario.class);
-        Usuario usuario = uS.insertar(u);
-        UsuarioDTO responseDTO = m.map(usuario, UsuarioDTO.class);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+        else
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rol no encontrado");
+        }
     }
     @GetMapping("/listar-usuario")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> listar()
     {
         ModelMapper m= new ModelMapper();
@@ -59,7 +59,7 @@ public class UsuarioController {
         return ResponseEntity.ok(listado);
     }
     @DeleteMapping("/eliminar-usuario/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Usuario> usuario=uS.listById(id);
@@ -75,7 +75,7 @@ public class UsuarioController {
         }
     }
     @PutMapping("/modificar-usuario")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String>actualizar(@RequestBody UsuarioDTO dto)
     {
         Optional<Usuario>existente=uS.listById(dto.getUsuarioId());
@@ -84,9 +84,14 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
         }
         if(dto.getNombre()==null || dto.getApellido()==null || dto.getContrasena()==null || dto.getCorreo()==null
-        || dto.getTelefono()==null || dto.getFotoUrl()==null || dto.getRoles()==null)
+        || dto.getTelefono()==null || dto.getFotoUrl()==null || dto.getRolId()<=0)
         {
             return ResponseEntity.badRequest().body("Por favor completar los campos");
+        }
+        Optional<Rol> existe=rS.listById(dto.getRolId());
+        if(existe.isEmpty())
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rol no encontrado");
         }
         Usuario u= existente.get();
         u.setNombre(dto.getNombre());
@@ -95,29 +100,14 @@ public class UsuarioController {
         u.setCorreo(dto.getCorreo());
         u.setTelefono(dto.getTelefono());
         u.setFotoUrl(dto.getFotoUrl());
-        List<Rol> roles = new ArrayList<>();
-        for (RolDTO rolDTO : dto.getRoles()) {
-
-            Optional<Rol> rolOptional = rS.listById(rolDTO.getRolId());
-
-            if (rolOptional.isEmpty()) {
-
-                return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .body("Rol con ID " + rolDTO.getRolId() + " no encontrado");
-            }
-
-            roles.add(rolOptional.get());
-        }
-
-        u.setRoles(roles);
+        u.setRol(existe.get());
 
         uS.insertar(u);
         return ResponseEntity.ok("Datos actualizados con éxito");
     }
 
     @GetMapping("/con-propiedades")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> obtenerUsuariosConPropiedades() {
         List<Object[]>listarCantidad=uS.listarPropietariosConPropiedades();
         if(listarCantidad.isEmpty())
@@ -138,7 +128,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/listar-cantidad-usuarios-rol")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> obtenerUsuariosPorRol() {
         List<Object[]>listarCantUsuariosRol=uS.contarUsuariosPorRol();
         if(listarCantUsuariosRol.isEmpty())

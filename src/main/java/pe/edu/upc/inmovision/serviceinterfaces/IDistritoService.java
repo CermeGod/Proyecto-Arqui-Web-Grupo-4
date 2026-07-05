@@ -12,4 +12,5 @@ public interface IDistritoService {
     public List<Distrito> listar();
     public void delete(int id);
     public void update(Distrito distrito);
+    public List<Distrito> listarporprovincia(int idProvincia);
 }
