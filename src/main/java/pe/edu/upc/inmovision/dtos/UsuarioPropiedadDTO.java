@@ -4,7 +4,6 @@ public class UsuarioPropiedadDTO {
     private int usuarioId;
     private String nombre;
     private String apellido;
-    private int totalPropiedades;
 
     public int getUsuarioId() {
         return usuarioId;
@@ -30,11 +29,5 @@ public class UsuarioPropiedadDTO {
         this.apellido = apellido;
     }
 
-    public int getTotalPropiedades() {
-        return totalPropiedades;
-    }
 
-    public void setTotalPropiedades(int totalPropiedades) {
-        this.totalPropiedades = totalPropiedades;
-    }
 }
