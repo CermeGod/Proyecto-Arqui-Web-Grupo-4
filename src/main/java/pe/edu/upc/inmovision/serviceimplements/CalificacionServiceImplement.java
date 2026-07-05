@@ -33,4 +33,19 @@ public class CalificacionServiceImplement implements ICalificacionService {
     public void delete(int id) {
         caR.deleteById(id);
     }
+
+    @Override
+    public List<Calificacion> listarporpuntuacion(int puntuacion) {
+        return caR.findByPuntuacion(puntuacion);
+    }
+
+    @Override
+    public List<Calificacion> listarporfechareciente() {
+        return caR.findAllByOrderByFechaDesc();
+    }
+
+    @Override
+    public List<Calificacion> listarporfechaantigua() {
+        return caR.findAllByOrderByFechaAsc();
+    }
 }

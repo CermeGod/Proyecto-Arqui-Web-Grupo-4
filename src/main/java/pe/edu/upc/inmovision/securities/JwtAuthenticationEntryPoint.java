@@ -1,4 +1,4 @@
-package pe.edu.upc.inmovision.securities;
+/*package pe.edu.upc.inmovision.securities;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,4 +16,4 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
     }
-}
+}*/

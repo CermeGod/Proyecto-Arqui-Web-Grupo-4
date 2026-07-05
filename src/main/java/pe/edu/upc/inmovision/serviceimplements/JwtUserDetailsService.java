@@ -1,4 +1,4 @@
-package pe.edu.upc.inmovision.serviceimplements;
+/*package pe.edu.upc.inmovision.serviceimplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,3 +38,4 @@ public class JwtUserDetailsService implements UserDetailsService {
         return ud;
     }
 }
+*/

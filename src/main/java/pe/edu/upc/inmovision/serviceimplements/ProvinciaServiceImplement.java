@@ -37,4 +37,9 @@ public class ProvinciaServiceImplement  implements IProvinciaService {
     public void update(Provincia provincia) {
         pR.save(provincia);
     }
+
+    @Override
+    public List<Provincia> listarpordepartamento(int idDepartamento) {
+        return pR.findByDepartamentoDepartamentoId(idDepartamento);
+    }
 }

@@ -5,13 +5,15 @@ import java.util.List;
 
 public class UsuarioResponseDTO {
     private int usuarioId;
-    private List<RolDTO> roles;
+    private int rolId;
+    private String rolName;
     private String nombre;
     private String apellido;
     private String correo;
     private String telefono;
     private String fotoUrl;
     private LocalDate fechaRegistro;
+    private Boolean enabled;
 
     public int getUsuarioId() {
         return usuarioId;
@@ -21,12 +23,20 @@ public class UsuarioResponseDTO {
         this.usuarioId = usuarioId;
     }
 
-    public List<RolDTO> getRoles() {
-        return roles;
+    public int getRolId() {
+        return rolId;
     }
 
-    public void setRoles(List<RolDTO> roles) {
-        this.roles = roles;
+    public void setRolId(int rolId) {
+        this.rolId = rolId;
+    }
+
+    public String getRolName() {
+        return rolName;
+    }
+
+    public void setRolName(String rolName) {
+        this.rolName = rolName;
     }
 
     public String getNombre() {
@@ -75,5 +85,13 @@ public class UsuarioResponseDTO {
 
     public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }

@@ -11,4 +11,5 @@ public interface IDepartamentoService {
     public Optional<Departamento> buscarPorId(int id);
     public void delete(int id);
     public void update(Departamento departamento);
+    public List<Departamento> listarpornombre(String name);
 }

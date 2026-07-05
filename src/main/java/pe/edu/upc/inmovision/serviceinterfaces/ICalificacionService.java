@@ -9,4 +9,7 @@ public interface ICalificacionService {
     public List<Calificacion> listar();
     public Optional<Calificacion> listById(int id);
     public void delete(int id);
+    public List<Calificacion> listarporpuntuacion(int puntuacion);
+    public List<Calificacion>listarporfechareciente();
+    public List<Calificacion>listarporfechaantigua();
 }

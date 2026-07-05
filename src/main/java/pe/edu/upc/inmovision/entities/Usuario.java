@@ -15,35 +15,47 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int usuarioId;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "usuario_rol",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "rol_id")
-    )
-    private List<Rol> roles;
-    @Column(name = "nombre", nullable = false, length = 50)
+    @ManyToOne
+    @JoinColumn(name = "rolId")
+    private Rol rol;
+    @Column(name = "nombre", nullable = false, length = 30)
     private String nombre;
 
-    @Column(name = "apellido", nullable = false, length = 50)
+    @Column(name = "apellido", nullable = false, length = 30)
     private String apellido;
 
     @Column(name = "correo", nullable = false, length = 50)
     private String correo;
 
-    @Column(name = "contrasena", nullable = false, length = 100)
+    @Column(name = "contrasena", nullable = false, length = 8)
     private String contrasena;
 
     @Column(name = "telefono", nullable = false, length = 9)
     private String telefono;
 
-    @Column(name = "foto_url", nullable = true, length = 100)
+    @Column(name = "foto_url", nullable = true)
     private String fotoUrl;
 
     @Column(name = "fecha_registro", nullable = false)
     private LocalDate fechaRegistro;
     @Column(name = "enabled", nullable = false)
     private Boolean enabled;
+
+    public Usuario() {
+    }   
+
+    public Usuario(int usuarioId, Rol rol, String nombre, String apellido, String correo, String contrasena, String telefono, String fotoUrl, LocalDate fechaRegistro, Boolean enabled) {
+        this.usuarioId = usuarioId;
+        this.rol = rol;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.contrasena = contrasena;
+        this.telefono = telefono;
+        this.fotoUrl = fotoUrl;
+        this.fechaRegistro = fechaRegistro;
+        this.enabled = enabled;
+    }
 
     public int getUsuarioId() {
         return usuarioId;
@@ -53,12 +65,12 @@ public class Usuario implements Serializable {
         this.usuarioId = usuarioId;
     }
 
-    public List<Rol> getRoles() {
-        return roles;
+    public Rol getRol() {
+        return rol;
     }
 
-    public void setRoles(List<Rol> roles) {
-        this.roles = roles;
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
     public String getNombre() {

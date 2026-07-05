@@ -12,4 +12,5 @@ public interface IProvinciaService {
     public Optional<Provincia> buscarPorId(int id);
     public void delete(int id);
     public void update(Provincia provincia);
+     public List<Provincia> listarpordepartamento(int idDepartamento);
 }

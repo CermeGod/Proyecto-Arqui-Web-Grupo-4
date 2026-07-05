@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.DistritoDTO;
 import pe.edu.upc.inmovision.entities.Distrito;
@@ -27,7 +27,7 @@ public class DistritoController {
     private ProvinciaServiceImplement pS;
 
     @PostMapping("/registrar-distrito")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> registrar(@RequestBody DistritoDTO dto)
     {
         ModelMapper m=new ModelMapper();
@@ -59,8 +59,19 @@ public class DistritoController {
         return ResponseEntity.ok(lista);
     }
 
+    @GetMapping("/listar-distritos-por-provincia/{idprov}")
+    public ResponseEntity<?> listarDistritosporprovincia(@PathVariable int idprov)
+    {
+        ModelMapper m=new ModelMapper();
+        List<DistritoDTO> lista=dS.listarporprovincia(idprov).stream()
+                .map(y->m.map(y,DistritoDTO.class))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(lista);
+    }
+
     @DeleteMapping("/eliminar-distrito/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Distrito> distrito=dS.listID(id);
@@ -77,7 +88,7 @@ public class DistritoController {
     }
    
     @PutMapping("/modificar-distrito")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+   // @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String>actualizar(@RequestBody DistritoDTO dto)
     {
         Optional<Distrito>existente=dS.listID(dto.getDistritoId());

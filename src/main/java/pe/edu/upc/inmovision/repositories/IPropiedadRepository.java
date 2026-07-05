@@ -21,4 +21,5 @@ public interface IPropiedadRepository extends JpaRepository<Propiedades,Integer>
             " group by p.titulo\n" +
             " order by total_contactos desc;", nativeQuery = true)
     List<Object[]> propiedadesPorContacto();
+
 }

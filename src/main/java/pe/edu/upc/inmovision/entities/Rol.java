@@ -17,9 +17,6 @@ public class Rol implements Serializable {
     @Column(nullable = false, length = 50)
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    @JsonIgnore
-    private List<Usuario> usuarios;
 
     public int getRolId() {
         return rolId;
@@ -37,11 +34,5 @@ public class Rol implements Serializable {
         this.name = name;
     }
 
-    public List<Usuario> getUsuarios() {
-        return usuarios;
-    }
 
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
-    }
 }

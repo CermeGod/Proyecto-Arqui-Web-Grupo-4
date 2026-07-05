@@ -4,6 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pe.edu.upc.inmovision.entities.Provincia;
 
+import java.util.List;
+
 @Repository
 public interface IProvinciaRepository  extends JpaRepository<Provincia,Integer> {
+    List<Provincia> findByDepartamentoDepartamentoId(int idDepartamento);
 }
