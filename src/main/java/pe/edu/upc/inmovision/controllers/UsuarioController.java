@@ -58,6 +58,19 @@ public class UsuarioController {
         }
         return ResponseEntity.ok(listado);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarPorId(@PathVariable int id) {
+        ModelMapper m = new ModelMapper();
+        Optional<Usuario> project = uS.listById(id);
+
+        if (project.isPresent()) {
+            UsuarioEditDTO dto = m.map(project.get(), UsuarioEditDTO.class);
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Proyecto no encontrado");
+        }
+    }
     @DeleteMapping("/eliminar-usuario/{id}")
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
@@ -76,15 +89,15 @@ public class UsuarioController {
     }
     @PutMapping("/modificar-usuario")
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<String>actualizar(@RequestBody UsuarioDTO dto)
+    public ResponseEntity<String>actualizar(@RequestBody UsuarioEditDTO dto)
     {
         Optional<Usuario>existente=uS.listById(dto.getUsuarioId());
         if(existente.isEmpty())
         {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
         }
-        if(dto.getNombre()==null || dto.getApellido()==null || dto.getContrasena()==null || dto.getCorreo()==null
-        || dto.getTelefono()==null || dto.getFotoUrl()==null || dto.getRolId()<=0)
+        if(dto.getNombre()==null || dto.getApellido()==null  || dto.getCorreo()==null
+        || dto.getTelefono()==null || dto.getFotoUrl()==null || dto.getRolId()<=0 || dto.getEnabled()== null)
         {
             return ResponseEntity.badRequest().body("Por favor completar los campos");
         }
@@ -96,13 +109,13 @@ public class UsuarioController {
         Usuario u= existente.get();
         u.setNombre(dto.getNombre());
         u.setApellido(dto.getApellido());
-        u.setContrasena(dto.getContrasena());
         u.setCorreo(dto.getCorreo());
         u.setTelefono(dto.getTelefono());
         u.setFotoUrl(dto.getFotoUrl());
         u.setRol(existe.get());
+        u.setEnabled(dto.getEnabled());
 
-        uS.insertar(u);
+        uS.update(u);
         return ResponseEntity.ok("Datos actualizados con éxito");
     }
 
