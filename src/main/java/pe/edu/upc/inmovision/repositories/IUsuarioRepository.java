@@ -11,6 +11,8 @@ import java.util.List;
 public interface IUsuarioRepository extends JpaRepository<Usuario,Integer> {
     public Usuario findOneByCorreo(String correo);
 
+    List<Usuario> findByRol_Name(String rolName);
+
     //QUERYS NATIVE STEPHANO
     /*@Query(value = "SELECT \n" +
             "        u.usuario_id,\n" +
@@ -34,15 +36,11 @@ public interface IUsuarioRepository extends JpaRepository<Usuario,Integer> {
             nativeQuery = true)
     List<Object[]> contarUsuariosPorRol();
 
-    @Query(value = "SELECT u.usuario_id, u.nombre, u.apellido, " +
-            "COUNT(p.propiedad_id) AS total_propiedades " +
-            "FROM usuario u " +
-            "JOIN usuario_rol ur ON u.usuario_id = ur.user_id " +
-            "JOIN rol r ON ur.rol_id = r.rol_id " +
-            "LEFT JOIN propiedades p ON u.usuario_id = p.usuario_id " +
-            "WHERE r.name = 'ROLE_PROPIETARIO' " +
-            "GROUP BY u.usuario_id, u.nombre, u.apellido " +
-            "ORDER BY total_propiedades DESC",
+    @Query(value = "SELECT u.usuario_id,u.nombre,u.apellido\n" +
+            "    FROM usuario u\n" +
+            "    INNER JOIN rol r ON u.rol_id = r.rol_id\n" +
+            "    WHERE r.name = 'ROLE_PROPIETARIO'\n" +
+            "\tGroup BY u.usuario_id, u.nombre,u.apellido",
             nativeQuery = true)
     List<Object[]> listarPropietariosConPropiedades();
 

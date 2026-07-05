@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.GeneralPropiedadDTO;
 import pe.edu.upc.inmovision.dtos.QuantityPropiedadxContactoDTO;
 import pe.edu.upc.inmovision.dtos.QuantityPropiedadxDistritoDTO;
+import pe.edu.upc.inmovision.dtos.UsuarioEditDTO;
 import pe.edu.upc.inmovision.entities.Distrito;
 import pe.edu.upc.inmovision.entities.Propiedades;
 import pe.edu.upc.inmovision.entities.Usuario;
@@ -67,6 +68,19 @@ public class PropiedadController {
         }
         return ResponseEntity.ok(lista);
     }
+    @GetMapping("/listar/{id}")
+    public ResponseEntity<?> listarPropiedadesporId(@PathVariable int id)
+    {
+        ModelMapper m = new ModelMapper();
+        Optional<Propiedades> pro=pS.listById(id);
+        if (pro.isPresent()) {
+            GeneralPropiedadDTO dto = m.map(pro.get(), GeneralPropiedadDTO.class);
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Propiedad no encontrada");
+        }
+    }
 
     @PutMapping("/modificar-propiedad")
     //@PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
@@ -77,7 +91,7 @@ public class PropiedadController {
         }
         if (dto.getTitulo() == null || dto.getDescripcion() == null || dto.getPrecio() < 0 || dto.getDireccion() == null
                 || dto.getEstado() == null || dto.getArea() == null || dto.getHabitacion() < 0 || dto.getBanios() < 0
-                || dto.getUrlVR() == null || dto.getDistritoId() < 0)
+                || dto.getUrlVR() == null || dto.getDistritoId() < 0 || dto.getUsuarioId()<0)
         {
             return ResponseEntity.badRequest().body("Por favor completar todos los campos");
         }
@@ -85,6 +99,11 @@ public class PropiedadController {
         if(existe.isEmpty())
         {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Distrito no encontrado");
+        }
+        Optional<Usuario> exist=uS.listById(dto.getUsuarioId());
+        if(exist.isEmpty())
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
         }
         Propiedades p=existente.get();
         p.setTitulo(dto.getTitulo());
@@ -97,6 +116,7 @@ public class PropiedadController {
         p.setBanios(dto.getBanios());
         p.setUrlVR(dto.getUrlVR());
         p.setDistrito(existe.get());
+        p.setUsuario(exist.get());
         pS.update(p);
         return ResponseEntity.ok("Propiedad actualizada");
 

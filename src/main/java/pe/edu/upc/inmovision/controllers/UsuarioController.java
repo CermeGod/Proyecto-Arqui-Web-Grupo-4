@@ -68,7 +68,7 @@ public class UsuarioController {
             return ResponseEntity.ok(dto);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Proyecto no encontrado");
+                    .body("Usuario no encontrado");
         }
     }
     @DeleteMapping("/eliminar-usuario/{id}")
@@ -134,7 +134,6 @@ public class UsuarioController {
             dto.setUsuarioId(((Number)fila[0]).intValue());
             dto.setNombre(((String)fila[1]));
             dto.setApellido(((String)fila[2]));
-            dto.setTotalPropiedades(((Number)fila[3]).intValue());
             respuesta.add(dto);
         }
         return ResponseEntity.ok(respuesta);

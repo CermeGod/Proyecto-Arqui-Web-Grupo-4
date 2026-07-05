@@ -13,5 +13,5 @@ public interface IUsuarioService {
     public void update(Usuario u);
     //public List<Object[]> obtenerUsuariosConPropiedades();
     public List<Object[]> contarUsuariosPorRol();
-    List<Object[]> listarPropietariosConPropiedades();
+    public List<Object[]> listarPropietariosConPropiedades();
 }
