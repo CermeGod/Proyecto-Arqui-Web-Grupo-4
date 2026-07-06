@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.RecomendacionPropiedadDTO;
 import pe.edu.upc.inmovision.dtos.RecomendacionesDTO;
@@ -31,7 +31,7 @@ public class RecomendacionesController {
     private PropiedadServiceImplement pS;
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/registrar-recomendacion")
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<?> registrar(@RequestBody RecomendacionesDTO dto) {
         Optional<Usuario>listusuario=uS.listById(dto.getUsuarioId());
         Optional<Propiedades>listpropiedades=pS.listById(dto.getPropiedadId());
@@ -47,6 +47,7 @@ public class RecomendacionesController {
             RecomendacionesDTO responseDTO = new RecomendacionesDTO();
             responseDTO.setRecomendacionId(rec.getRecomendacionId());
             responseDTO.setUsuarioId(rec.getUsuario().getUsuarioId());
+            responseDTO.setUsuarioNombre(rec.getUsuario().getNombre()); //
             responseDTO.setPropiedadId(rec.getPropiedad().getPropiedadId());
             RecomendacionPropiedadDTO pDTO = new RecomendacionPropiedadDTO();
             pDTO.setTitulo(rec.getPropiedad().getTitulo());
@@ -75,6 +76,7 @@ public class RecomendacionesController {
 
                     dto.setRecomendacionId(r.getRecomendacionId());
                     dto.setUsuarioId(r.getUsuario().getUsuarioId());
+                    dto.setUsuarioNombre(r.getUsuario().getNombre());
                     dto.setPropiedadId(r.getPropiedad().getPropiedadId());
 
                     RecomendacionPropiedadDTO pDTO = new RecomendacionPropiedadDTO();

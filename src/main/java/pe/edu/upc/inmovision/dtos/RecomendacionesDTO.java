@@ -7,6 +7,7 @@ public class RecomendacionesDTO {
     private int recomendacionId;
     private int propiedadId;
     private int usuarioId;
+    private String usuarioNombre;
     private RecomendacionPropiedadDTO propiedad;
 
     public int getRecomendacionId() {
@@ -31,6 +32,14 @@ public class RecomendacionesDTO {
 
     public void setUsuarioId(int usuarioId) {
         this.usuarioId = usuarioId;
+    }
+
+    public String getUsuarioNombre() {
+        return usuarioNombre;
+    }
+
+    public void setUsuarioNombre(String usuarioNombre) {
+        this.usuarioNombre = usuarioNombre;
     }
 
     public RecomendacionPropiedadDTO getPropiedad() {

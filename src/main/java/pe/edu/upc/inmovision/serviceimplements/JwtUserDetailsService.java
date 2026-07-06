@@ -1,4 +1,4 @@
-/*package pe.edu.upc.inmovision.serviceimplements;
+package pe.edu.upc.inmovision.serviceimplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,13 +29,10 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         List<GrantedAuthority> roles = new ArrayList<>();
 
-        usuario.getRoles().forEach(rol -> {
-            roles.add(new SimpleGrantedAuthority(rol.getName()));
-        });
+        roles.add(new SimpleGrantedAuthority(usuario.getRol().getName()));
 
         UserDetails ud = new org.springframework.security.core.userdetails.User(usuario.getCorreo(), usuario.getContrasena(), usuario.getEnabled(), true, true, true, roles);
 
         return ud;
     }
 }
-*/

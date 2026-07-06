@@ -8,6 +8,7 @@ public class CalificacionDTO {
     private String comentario;
     private LocalDate fecha;
     private int propiedadId;
+    private String tituloPropiedad;
     private int usuarioId;
 
     public int getCalificacionId() {
@@ -48,6 +49,14 @@ public class CalificacionDTO {
 
     public void setPropiedadId(int propiedadId) {
         this.propiedadId = propiedadId;
+    }
+
+    public String getTituloPropiedad() {
+        return tituloPropiedad;
+    }
+
+    public void setTituloPropiedad(String tituloPropiedad) {
+        this.tituloPropiedad = tituloPropiedad;
     }
 
     public int getUsuarioId() {

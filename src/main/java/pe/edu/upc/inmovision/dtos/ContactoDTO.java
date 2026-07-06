@@ -11,6 +11,7 @@ public class ContactoDTO {
     private LocalDate fecha;
     private int propiedadId;
     private int usuarioId;
+    private String propietarioNombre;
 
     public int getContactoId() {
         return contactoId;
@@ -74,5 +75,13 @@ public class ContactoDTO {
 
     public void setUsuarioId(int usuarioId) {
         this.usuarioId = usuarioId;
+    }
+
+    public String getPropietarioNombre() {
+        return propietarioNombre;
+    }
+
+    public void setPropietarioNombre(String propietarioNombre) {
+        this.propietarioNombre = propietarioNombre;
     }
 }
