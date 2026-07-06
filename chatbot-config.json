@@ -1,0 +1,183 @@
+{
+  "chatbotConfig": {
+    "apiName": "Inmovision Chatbot with Mistral AI",
+    "version": "1.0",
+    "baseUrl": "http://localhost:8080",
+    "status": "ready-for-testing",
+    "documentation": {
+      "swagger": "http://localhost:8080/swagger-ui.html",
+      "readmeFile": "INSTRUCCIONES_INTELLIJ.md",
+      "architectureFile": "ARQUITECTURA.md"
+    },
+    "endpoints": [
+      {
+        "name": "Chatbot Ping",
+        "method": "GET",
+        "path": "/api/v1/chatbot/ping",
+        "description": "Verificar que el chatbot está activo",
+        "authentication": false,
+        "expectedResponse": "Chatbot de Inmovision está activo ✓"
+      },
+      {
+        "name": "Consultar Chatbot",
+        "method": "POST",
+        "path": "/api/v1/chatbot/consultar",
+        "description": "Enviar una pregunta al chatbot",
+        "authentication": false,
+        "contentType": "application/json",
+        "requestBody": {
+          "mensaje": "¿Qué propiedades tienes?",
+          "contexto": "El usuario busca apartamentos"
+        },
+        "expectedResponse": {
+          "respuesta": "string - Respuesta del chatbot",
+          "timestamp": "string - Hora de la respuesta",
+          "exito": "boolean - Si fue exitosa",
+          "mensaje": "string - Mensaje de estado"
+        }
+      }
+    ],
+    "environment": {
+      "variables": [
+        {
+          "name": "MISTRAL_API_KEY",
+          "required": true,
+          "description": "API Key de Mistral AI",
+          "value": "sk-xxxxxxxxxxxx"
+        },
+        {
+          "name": "MISTRAL_MODEL",
+          "required": false,
+          "description": "Modelo de Mistral a usar",
+          "default": "mistral-small-latest",
+          "alternatives": [
+            "mistral-medium-latest",
+            "mistral-large-latest"
+          ]
+        }
+      ]
+    },
+    "testCases": [
+      {
+        "name": "Test Ping",
+        "endpoint": "/api/v1/chatbot/ping",
+        "method": "GET",
+        "expectedStatus": 200,
+        "description": "Verificar que el servidor está corriendo"
+      },
+      {
+        "name": "Test Consulta Simple",
+        "endpoint": "/api/v1/chatbot/consultar",
+        "method": "POST",
+        "payload": {
+          "mensaje": "Hola, ¿cómo estás?",
+          "contexto": ""
+        },
+        "expectedStatus": 200,
+        "expectedFields": ["respuesta", "timestamp", "exito", "mensaje"]
+      },
+      {
+        "name": "Test Consulta con Contexto",
+        "endpoint": "/api/v1/chatbot/consultar",
+        "method": "POST",
+        "payload": {
+          "mensaje": "¿Qué propiedades tienes?",
+          "contexto": "Cliente buscando apartamentos de 2 habitaciones en Lima"
+        },
+        "expectedStatus": 200,
+        "expectedFields": ["respuesta", "timestamp", "exito", "mensaje"]
+      },
+      {
+        "name": "Test Mensaje Vacío (Error Esperado)",
+        "endpoint": "/api/v1/chatbot/consultar",
+        "method": "POST",
+        "payload": {
+          "mensaje": "",
+          "contexto": ""
+        },
+        "expectedStatus": 400,
+        "expectedMessage": "El mensaje no puede estar vacío"
+      }
+    ],
+    "fileStructure": {
+      "created": [
+        "src/main/java/pe/edu/upc/inmovision/dtos/ChatbotRequestDTO.java",
+        "src/main/java/pe/edu/upc/inmovision/dtos/ChatbotResponseDTO.java",
+        "src/main/java/pe/edu/upc/inmovision/serviceinterfaces/IChatbotService.java",
+        "src/main/java/pe/edu/upc/inmovision/serviceimplements/ChatbotServiceImplement.java",
+        "src/main/java/pe/edu/upc/inmovision/controllers/ChatbotController.java",
+        "src/main/java/pe/edu/upc/inmovision/config/CorsConfig.java"
+      ],
+      "modified": [
+        "pom.xml",
+        "src/main/resources/application.properties",
+        "src/main/java/pe/edu/upc/inmovision/securities/WebSecurityConfig.java"
+      ],
+      "documentation": [
+        "INSTRUCCIONES_INTELLIJ.md",
+        "CHATBOT_README.md",
+        "SETUP_CHATBOT_PASO_A_PASO.md",
+        "ARQUITECTURA.md",
+        "CHECKLIST_COMPLETADO.md",
+        "ejemplos-frontend.js",
+        "test-chatbot.ps1",
+        "test-chatbot.sh",
+        "src/main/resources/.env.example"
+      ]
+    },
+    "dependencies": [
+      {
+        "groupId": "com.squareup.okhttp3",
+        "artifactId": "okhttp",
+        "version": "4.11.0",
+        "purpose": "HTTP Client para llamadas a Mistral API"
+      },
+      {
+        "groupId": "com.fasterxml.jackson.core",
+        "artifactId": "jackson-databind",
+        "version": "2.17.0",
+        "purpose": "JSON serialization/deserialization"
+      }
+    ],
+    "security": {
+      "cors": {
+        "enabled": true,
+        "allowedOrigins": [
+          "http://localhost:3000",
+          "http://localhost:5173",
+          "*"
+        ],
+        "allowedMethods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allowedHeaders": "*"
+      },
+      "apiKeyManagement": {
+        "method": "Environment Variable",
+        "variableName": "MISTRAL_API_KEY",
+        "location": "application.properties property: mistral.api.key"
+      },
+      "publicEndpoints": [
+        "/login",
+        "/swagger-ui/**",
+        "/v3/api-docs/**",
+        "/api/v1/chatbot/**"
+      ]
+    },
+    "performance": {
+      "expectedResponseTime": "500-2000ms",
+      "throughputCapacity": "1000+ requests/minute",
+      "bottleneck": "Mistral AI API response time",
+      "optimization": "Implement response caching"
+    },
+    "nextSteps": [
+      "1. Execute in IntelliJ IDEA",
+      "2. Maven Reload Projects",
+      "3. Run InmovisionApplication",
+      "4. Test endpoints",
+      "5. Integrate with frontend",
+      "6. Deploy to production"
+    ],
+    "createdAt": "2026-07-04T16:17:36.625-05:00",
+    "version": "1.0",
+    "status": "READY FOR TESTING"
+  }
+}
