@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.*;
 import pe.edu.upc.inmovision.entities.Rol;
@@ -26,7 +27,8 @@ public class UsuarioController {
     private IUsuarioService uS;
     @Autowired
     private IRolService rS;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @PostMapping("/registrar-usuario")
    // @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> insertar(@RequestBody UsuarioDTO dto) {
@@ -35,6 +37,8 @@ public class UsuarioController {
         if(existente.isPresent())
         {
             Usuario u=m.map(dto,Usuario.class);
+            // Encriptar la contraseña
+            u.setContrasena(passwordEncoder.encode(u.getContrasena()));
             Usuario us=uS.insertar(u);
             UsuarioDTO responseDTO=m.map(us,UsuarioDTO.class);
             return  ResponseEntity.ok(responseDTO);
@@ -127,10 +131,30 @@ public class UsuarioController {
         {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No hay propiedades registradas");
         }
-        List<UsuarioPropiedadDTO> respuesta=new ArrayList<>();
+        List<UsuarioRolDTO> respuesta=new ArrayList<>();
         for(Object[] fila:listarCantidad)
         {
-            UsuarioPropiedadDTO dto=new UsuarioPropiedadDTO();
+            UsuarioRolDTO dto=new UsuarioRolDTO();
+            dto.setUsuarioId(((Number)fila[0]).intValue());
+            dto.setNombre(((String)fila[1]));
+            dto.setApellido(((String)fila[2]));
+            respuesta.add(dto);
+        }
+        return ResponseEntity.ok(respuesta);
+    }
+
+    @GetMapping("/clientes")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> listarClientes() {
+        List<Object[]>listado=uS.listarUsuariosClientes();
+        if(listado.isEmpty())
+        {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No hay propiedades registradas");
+        }
+        List<UsuarioRolDTO> respuesta=new ArrayList<>();
+        for(Object[] fila:listado)
+        {
+            UsuarioRolDTO dto=new UsuarioRolDTO();
             dto.setUsuarioId(((Number)fila[0]).intValue());
             dto.setNombre(((String)fila[1]));
             dto.setApellido(((String)fila[2]));

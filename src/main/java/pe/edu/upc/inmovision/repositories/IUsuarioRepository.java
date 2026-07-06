@@ -39,9 +39,17 @@ public interface IUsuarioRepository extends JpaRepository<Usuario,Integer> {
     @Query(value = "SELECT u.usuario_id,u.nombre,u.apellido\n" +
             "    FROM usuario u\n" +
             "    INNER JOIN rol r ON u.rol_id = r.rol_id\n" +
-            "    WHERE r.name = 'ROLE_PROPIETARIO'\n" +
+            "    WHERE r.name = 'Propietario'\n" +
             "\tGroup BY u.usuario_id, u.nombre,u.apellido",
             nativeQuery = true)
     List<Object[]> listarPropietariosConPropiedades();
+
+    @Query(value = "SELECT u.usuario_id,u.nombre,u.apellido\n" +
+            "    FROM usuario u\n" +
+            "    INNER JOIN rol r ON u.rol_id = r.rol_id\n" +
+            "    WHERE r.name = 'Cliente'\n" +
+            "\tGroup BY u.usuario_id, u.nombre,u.apellido",
+            nativeQuery = true)
+    List<Object[]> listarusuariosClientes();
 
 }

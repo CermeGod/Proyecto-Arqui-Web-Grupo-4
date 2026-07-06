@@ -1,6 +1,6 @@
 package pe.edu.upc.inmovision.dtos;
 
-public class UsuarioPropiedadDTO {
+public class UsuarioRolDTO {
     private int usuarioId;
     private String nombre;
     private String apellido;

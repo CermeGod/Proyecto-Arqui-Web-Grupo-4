@@ -52,4 +52,9 @@ public class IUsuarioServiceImplement implements IUsuarioService {
     public List<Object[]> listarPropietariosConPropiedades() {
         return uR.listarPropietariosConPropiedades();
     }
+
+    @Override
+    public List<Object[]> listarUsuariosClientes() {
+        return uR.listarusuariosClientes();
+    }
 }

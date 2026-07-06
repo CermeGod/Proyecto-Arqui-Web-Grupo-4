@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.ColeccionDTO;
 import pe.edu.upc.inmovision.entities.*;
@@ -24,7 +24,7 @@ public class ColeccionController {
     private IColeccionService coS;
 
     @PostMapping("/registrar-coleccion")
-    //@PreAuthorize("hasAuthority('ROLE_CLIENTE')")
+    @PreAuthorize("hasAuthority('Cliente') or hasAuthority('Administrador')")
     public ResponseEntity<Coleccion> registrar(@RequestBody Coleccion coleccion)
     {
         Coleccion c=coS.insertar(coleccion);
@@ -32,7 +32,7 @@ public class ColeccionController {
     }
 
     @GetMapping("/listar-coleccion")
-    //@PreAuthorize("hasAuthority('ROLE_CLIENTE')")
+    @PreAuthorize("hasAuthority('Cliente') or hasAuthority('Administrador')  ")
     public ResponseEntity<?> listarcoleccion()
     {
         ModelMapper m=new ModelMapper();
@@ -47,7 +47,7 @@ public class ColeccionController {
     }
 
     @DeleteMapping("/eliminar-coleccion/{id}")
-    //@PreAuthorize("hasAuthority('ROLE_CLIENTE')")
+    @PreAuthorize("hasAuthority('Cliente') or hasAuthority('Administrador')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Coleccion> coleccion=coS.listById(id);

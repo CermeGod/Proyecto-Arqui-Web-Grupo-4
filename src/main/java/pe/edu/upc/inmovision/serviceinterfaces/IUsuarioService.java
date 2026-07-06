@@ -14,4 +14,5 @@ public interface IUsuarioService {
     //public List<Object[]> obtenerUsuariosConPropiedades();
     public List<Object[]> contarUsuariosPorRol();
     public List<Object[]> listarPropietariosConPropiedades();
+    public List<Object[]> listarUsuariosClientes();
 }

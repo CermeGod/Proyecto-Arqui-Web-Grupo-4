@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.entities.Departamento;
 import pe.edu.upc.inmovision.serviceimplements.DepartamentoServiceImplement;
@@ -20,7 +20,7 @@ public class DepartamentoController {
     private DepartamentoServiceImplement dS;
 
     @PostMapping("/registrar-departamento")
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<Departamento> registrar(@RequestBody Departamento departamento)
     {
         Departamento d=dS.insertar(departamento);
@@ -47,7 +47,7 @@ public class DepartamentoController {
     }
 
     @DeleteMapping("/eliminar-departamento/{id}")
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Departamento> departamento=dS.buscarPorId(id);

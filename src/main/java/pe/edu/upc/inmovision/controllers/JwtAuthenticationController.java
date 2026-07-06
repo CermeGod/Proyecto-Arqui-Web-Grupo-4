@@ -1,4 +1,4 @@
-/*package pe.edu.upc.inmovision.controllers;
+package pe.edu.upc.inmovision.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -46,4 +46,4 @@ public class JwtAuthenticationController {
 
 
     }
-}*/
+}

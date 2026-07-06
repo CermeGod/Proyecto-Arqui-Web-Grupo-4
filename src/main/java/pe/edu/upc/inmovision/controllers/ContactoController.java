@@ -6,18 +6,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.inmovision.dtos.ContactoDTO;
-import pe.edu.upc.inmovision.dtos.GeneralPropiedadDTO;
-import pe.edu.upc.inmovision.dtos.ProvinciaDTO;
-import pe.edu.upc.inmovision.dtos.UsuarioDTO;
 import pe.edu.upc.inmovision.entities.Contacto;
 import pe.edu.upc.inmovision.entities.Propiedades;
-import pe.edu.upc.inmovision.entities.Provincia;
 import pe.edu.upc.inmovision.entities.Usuario;
 import pe.edu.upc.inmovision.serviceimplements.ContactoServicesImplement;
-import pe.edu.upc.inmovision.serviceimplements.DepartamentoServiceImplement;
 import pe.edu.upc.inmovision.serviceimplements.IUsuarioServiceImplement;
 import pe.edu.upc.inmovision.serviceimplements.PropiedadServiceImplement;
 
@@ -38,7 +33,7 @@ public class ContactoController {
     private IUsuarioServiceImplement uS;
 
     @PostMapping("/registrar-contacto")
-    //@PreAuthorize("hasAuthority('ROLE_CLIENTE')")
+    @PreAuthorize("hasAuthority('Cliente') or hasAuthority('Administrador')")
     public ResponseEntity<?> registrar(@RequestBody ContactoDTO dto)
     {
         ModelMapper m = new ModelMapper();
@@ -58,7 +53,6 @@ public class ContactoController {
     }
 
     @GetMapping("/listar-contacto")
-    //@PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
     public ResponseEntity<?> listarcontacto() {
         ModelMapper m = new ModelMapper();
         List<ContactoDTO> lista = cS.listar().stream()
@@ -71,7 +65,7 @@ public class ContactoController {
     }
 
     @DeleteMapping("/eliminar-contacto/{id}")
-    //@PreAuthorize("hasAuthority('ROLE_PROPIETARIO')")
+    @PreAuthorize("hasAuthority('Cliente') or hasAuthority('Administrador')")
     public ResponseEntity<String> eliminar(@PathVariable int id)
     {
         Optional<Contacto> contacto=cS.buscarPorId(id);

@@ -1,4 +1,4 @@
-/*package pe.edu.upc.inmovision.securities;
+package pe.edu.upc.inmovision.securities;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -95,4 +95,4 @@ public class JwtTokenUtil {
                 .equals(userDetails.getUsername())
                 && !isExpired(token);
     }
-}*/
+}
